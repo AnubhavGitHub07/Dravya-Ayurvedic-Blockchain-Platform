@@ -1,5 +1,6 @@
 import React from 'react'
 import { Leaf, FlaskConical, Factory, Package, Users, ArrowRight } from 'lucide-react'
+import { FloatingLeaf } from '@/features/landing/components/FloatingLeaf'
 
 export function HowItWorks() {
   const steps = [
@@ -32,6 +33,12 @@ export function HowItWorks() {
 
   return (
     <section className="w-full bg-[#F4F7F5] py-20 relative z-10 rounded-t-[40px] shadow-[0_-10px_40px_rgb(0,0,0,0.02)]">
+      <div className="absolute top-[5%] right-[10%] w-[110px] md:w-[135px] lg:w-[160px] pointer-events-none z-0 opacity-50 mix-blend-multiply">
+        <FloatingLeaf className="w-full h-auto text-primary" rotate={40} />
+      </div>
+      <div className="absolute top-[40%] left-[7%] w-[110px] md:w-[100px] lg:w-[130px] pointer-events-none z-0 opacity-50 mix-blend-multiply">
+        <FloatingLeaf className="w-full h-auto text-primary" rotate={-42} />
+      </div>
       <div className="max-w-[1400px] mx-auto px-6">
         <div className="text-center mb-16 space-y-4">
           <p className="text-[13px] font-bold text-primary tracking-[0.2em] uppercase">

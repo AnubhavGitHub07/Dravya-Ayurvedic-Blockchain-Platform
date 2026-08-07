@@ -8,15 +8,25 @@ export function LandingNavbar() {
     <div className="w-full bg-[#184E48] backdrop-blur-xl border-b border-white/10 shadow-[0_4px_20px_rgb(0,0,0,0.1)] transition-all duration-300">
       <nav className="flex items-center justify-between px-6 py-2.5 max-w-7xl mx-auto w-full">
         <div className="flex items-center gap-3">
-          <Sprout className="w-10 h-10 text-white stroke-[1.5]" />
+          <div className="w-[66px] h-[66px] rounded-full overflow-hidden flex-shrink-0">
+            <img
+              src="/logo-out.png"
+              alt="Dravya"
+              className="w-full h-full object-cover object-center"
+            />
+          </div>
+
           <div className="flex flex-col justify-center">
             <div className="flex items-center gap-2.5">
               <h1 className="text-xl md:text-2xl font-bold leading-none text-white tracking-tight font-serif">
                 Dravya
               </h1>
               <div className="w-[1.5px] h-4 bg-white/30 rounded-full" />
-              <span className="text-lg font-medium text-white leading-none mt-0.5">द्रव्य</span>
+              <span className="text-lg font-medium text-[var(--accent)] leading-none mt-0.5">
+                द्रव्य
+              </span>
             </div>
+
             <p className="text-[10px] text-slate-300 font-bold tracking-[0.15em] uppercase mt-1">
               Trust in every herb
             </p>

@@ -61,7 +61,8 @@ export function LoginForm() {
   return (
     <Card className="w-full max-w-[420px] mx-auto shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-0 rounded-2xl bg-white/95 backdrop-blur-xl">
       <CardHeader className="pt-6 pb-2 flex flex-col items-center text-center">
-        <Sprout className="w-12 h-12 text-primary mb-3 stroke-[1.5]" />
+        {/* Logo placed prominently above the card title */}
+        <div className="mb-3 flex flex-col items-center gap-2"></div>
         <CardTitle className="text-2xl font-bold text-slate-900 tracking-tight">
           Welcome Back
         </CardTitle>
@@ -85,7 +86,8 @@ export function LoginForm() {
                       <Mail className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
                       <Input
                         placeholder="Enter your email"
-                        className="pl-9 h-10 border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 rounded-lg focus-visible:ring-primary/40 focus-visible:border-primary transition-all text-base shadow-sm"
+                        style={{ caretColor: 'black', color: field.value ? 'black' : undefined }}
+                        className="pl-9 h-10 border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 rounded-lg focus-visible:ring-[var(--accent)]/40 focus-visible:border-[var(--accent)] transition-all text-base shadow-sm"
                         {...field}
                       />
                     </div>
@@ -108,7 +110,8 @@ export function LoginForm() {
                       <Input
                         type={showPassword ? 'text' : 'password'}
                         placeholder="Enter your password"
-                        className="pl-9 pr-9 h-10 border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 rounded-lg focus-visible:ring-primary/40 focus-visible:border-primary transition-all text-base shadow-sm"
+                        style={{ caretColor: 'black', color: field.value ? 'black' : undefined }}
+                        className="pl-9 pr-9 h-10 border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 rounded-lg focus-visible:ring-[var(--accent)]/40 focus-visible:border-[var(--accent)] transition-all text-base shadow-sm"
                         {...field}
                       />
                       <button
@@ -163,7 +166,7 @@ export function LoginForm() {
             <Button
               type="button"
               variant="outline"
-              className="w-full h-11 rounded-lg text-[15px] font-semibold border-slate-200 text-slate-700 flex items-center gap-2 hover:bg-slate-50/80 transition-all active:scale-[0.98] shadow-sm"
+              className="w-full h-11 rounded-lg text-[15px] font-semibold border-slate-200 text-slate-700 flex items-center gap-2 hover:bg-slate-50/80 transition-all active:scale-[0.98] shadow-sm hover:text-[var(--accent)] hover:scale-105 transition-all duration-300"
             >
               <Users className="w-4 h-4 text-primary" />
               Create New Account
@@ -171,11 +174,42 @@ export function LoginForm() {
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="justify-center border-t border-slate-100 py-3 bg-slate-50/50 rounded-b-2xl">
+      <CardFooter className="flex-col gap-2.5 border-t border-slate-100 pt-3 pb-4 bg-slate-50/50 rounded-b-2xl">
+        {/* Security badge */}
         <div className="flex items-center gap-1.5 text-slate-500 text-[12px] font-semibold tracking-wide">
           <ShieldCheck className="w-3.5 h-3.5 text-slate-400" />
           Secure access for authorized users only
         </div>
+        {/* Quick links */}
+        <nav className="flex items-center gap-1 text-[11px] text-slate-400">
+          <a
+            href="#"
+            className="hover:text-[var(--accent)] transition-colors font-medium px-1.5 py-0.5 rounded hover:bg-[var(--accent)]/8"
+          >
+            Privacy Policy
+          </a>
+          <span className="text-slate-300">·</span>
+          <a
+            href="#"
+            className="hover:text-[var(--accent)] transition-colors font-medium px-1.5 py-0.5 rounded hover:bg-[var(--accent)]/8"
+          >
+            Terms of Service
+          </a>
+          <span className="text-slate-300">·</span>
+          <a
+            href="#"
+            className="hover:text-[var(--accent)] transition-colors font-medium px-1.5 py-0.5 rounded hover:bg-[var(--accent)]/8"
+          >
+            Help Center
+          </a>
+          <span className="text-slate-300">·</span>
+          <a
+            href="#"
+            className="hover:text-[var(--accent)] transition-colors font-medium px-1.5 py-0.5 rounded hover:bg-[var(--accent)]/8"
+          >
+            Contact Us
+          </a>
+        </nav>
       </CardFooter>
     </Card>
   )

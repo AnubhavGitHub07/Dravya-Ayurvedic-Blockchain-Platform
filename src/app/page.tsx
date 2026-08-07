@@ -3,6 +3,7 @@ import { HowItWorks } from '@/features/landing/components/HowItWorks'
 import { Footer } from '@/features/landing/components/Footer'
 import { LoginForm } from '@/features/auth/components/LoginForm'
 import { LeafSprig } from '@/features/landing/components/LeafSprig'
+import { FloatingLeaf } from '@/features/landing/components/FloatingLeaf'
 import {
   ShieldCheck,
   FlaskConical,
@@ -25,23 +26,43 @@ export default function HomePage() {
       <div className="relative flex-1 flex flex-col w-full">
         {/* Logo Watermark Background */}
         <div
-          className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none mix-blend-multiply flex items-center justify-center"
+          className="absolute inset-0 z-0 opacity-[0.07] pointer-events-none mix-blend-multiply flex items-center justify-center"
           style={{
             backgroundImage: 'url("/logo.png")',
-            backgroundSize: 'min(70vw, 800px)',
-            backgroundPosition: '15% center',
+            backgroundSize: 'min(70vw, 700px)',
+            backgroundPosition: '15% 5%',
             backgroundRepeat: 'no-repeat',
           }}
         />
 
         {/* Decorative Tree Branch (Left Side) */}
-        <div className="absolute top-[10%] left-0 w-[200px] md:w-[300px] lg:w-[400px] pointer-events-none z-0 opacity-60 mix-blend-multiply transform -translate-x-[50%]">
+        <div className="absolute top-[25%] left-0 w-[200px] md:w-[300px] lg:w-[400px] pointer-events-none z-0 opacity-75 mix-blend-multiply transform -translate-x-[15%]">
           <LeafSprig className="w-full h-auto text-primary" />
         </div>
 
         {/* Decorative Tree Branch (Right Side) */}
-        <div className="absolute top-[30%] right-0 w-[200px] md:w-[300px] lg:w-[400px] pointer-events-none z-0 opacity-60 mix-blend-multiply transform translate-x-[50%]">
+        <div className="absolute top-[45%] right-0 w-[200px] md:w-[300px] lg:w-[400px] pointer-events-none z-0 opacity-75 mix-blend-multiply transform translate-x-[15%]">
           <LeafSprig className="w-full h-auto text-primary" flip={true} />
+        </div>
+
+        {/* Floating Leaf 1 — top, just right of watermark */}
+        <div className="absolute top-[5%] left-[54%] w-[110px] md:w-[135px] lg:w-[160px] pointer-events-none z-0 opacity-50 mix-blend-multiply">
+          <FloatingLeaf className="w-full h-auto text-primary" rotate={-22} />
+        </div>
+
+        {/* Floating Leaf 2 — upper left edge, outside watermark left */}
+        <div className="absolute top-[8%] left-[7%] w-[90px] md:w-[112px] lg:w-[138px] pointer-events-none z-0 opacity-45 mix-blend-multiply">
+          <FloatingLeaf className="w-full h-auto text-primary" rotate={70} />
+        </div>
+
+        {/* Floating Leaf 5 — lower, right of watermark */}
+        <div className="absolute top-[79%] left-[52%] w-[80px] md:w-[100px] lg:w-[122px] pointer-events-none z-0 opacity-37 mix-blend-multiply">
+          <FloatingLeaf className="w-full h-auto text-primary" rotate={-60} />
+        </div>
+
+        {/* Floating Leaf 6 — bottom, left edge */}
+        <div className="absolute top-[81%] left-[11%] w-[75px] md:w-[94px] lg:w-[115px] pointer-events-none z-0 opacity-33 mix-blend-multiply">
+          <FloatingLeaf className="w-full h-auto text-primary" rotate={116} />
         </div>
 
         <main className="flex-1 flex flex-col lg:flex-row items-center justify-between px-6 lg:px-24 py-12 gap-12 relative z-10 w-full max-w-[1600px] mx-auto">
@@ -62,7 +83,7 @@ export default function HomePage() {
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 pt-8">
-              <div className="group flex flex-col bg-white rounded-2xl p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+              <div className="group flex flex-col bg-white rounded-2xl p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden hover:border-[var(--accent)]">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-[100px] transition-transform duration-500 group-hover:scale-110" />
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center border border-primary/10 mb-4 relative z-10">
                   <ShieldCheck className="w-6 h-6 text-primary" />
@@ -75,7 +96,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="group flex flex-col bg-white rounded-2xl p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+              <div className="group flex flex-col bg-white rounded-2xl p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden hover:border-[var(--accent)]">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-[100px] transition-transform duration-500 group-hover:scale-110" />
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center border border-primary/10 mb-4 relative z-10">
                   <FlaskConical className="w-6 h-6 text-primary" />
@@ -88,7 +109,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="group flex flex-col bg-white rounded-2xl p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+              <div className="group flex flex-col bg-white rounded-2xl p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden hover:border-[var(--accent)]">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-[100px] transition-transform duration-500 group-hover:scale-110" />
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center border border-primary/10 mb-4 relative z-10">
                   <LinkIcon className="w-6 h-6 text-primary" />

@@ -62,10 +62,16 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8 mb-16">
           <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center gap-2">
-              <Sprout className="w-8 h-8 text-primary" />
+              <div className="w-[66px] h-[66px] rounded-full overflow-hidden flex-shrink-0">
+                <img
+                  src="/logo-out.png"
+                  alt="Dravya"
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
               <div className="flex items-baseline gap-1.5">
                 <span className="text-2xl font-bold leading-none text-white tracking-tight font-serif">
-                  Dravya
+                  Dravya |
                 </span>
                 <span className="text-xl font-medium text-primary leading-none">द्रव्य</span>
               </div>
