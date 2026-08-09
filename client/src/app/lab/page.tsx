@@ -1,4 +1,5 @@
 import { LabStats } from './_components/LabStats'
+import { AssignedBatchesQueue } from './_components/AssignedBatchesQueue'
 
 export default function LabDashboardPage() {
   return (
@@ -8,6 +9,10 @@ export default function LabDashboardPage() {
         <p className="text-muted-foreground">Testing activity overview</p>
       </div>
       <LabStats />
+      <div>
+        <h3 className="text-lg font-semibold mb-3">Awaiting Review</h3>
+        <AssignedBatchesQueue />
+      </div>
     </div>
   )
 }
