@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { register, login, getMe } from '../controllers/auth.controller'
-import { authMiddleware } from '../middleware/auth.middleware'
+import { authenticate } from '../middleware/auth.middleware'
 
 const router = Router()
 
@@ -9,6 +9,6 @@ router.post('/register', register)
 router.post('/login', login)
 
 // Protected routes
-router.get('/me', authMiddleware, getMe)
+router.get('/me', authenticate, getMe)
 
 export default router

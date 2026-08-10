@@ -34,11 +34,11 @@ export function LandingNavbar() {
         </div>
 
         <div className="hidden md:flex items-center gap-8">
-          <Link href="#" className="text-base font-bold text-white border-b-2 border-teal-200 pb-1">
+          <Link href="/" className="text-base font-bold text-white border-b-2 border-teal-200 pb-1">
             Home
           </Link>
           <Link
-            href="#"
+            href="/about"
             className="text-base font-semibold text-slate-300 hover:text-white transition-colors"
           >
             About

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { prisma } from '../lib/prisma'
-import { AuthRequest } from '../middleware/auth.middleware'
+import { AuthenticatedRequest } from '../middleware/auth.middleware'
 
 // ─── Helpers ─────────────────────────────────────────────
 
@@ -41,7 +41,6 @@ export async function getAllUsers(req: Request, res: Response): Promise<void> {
           createdAt: true,
           _count: {
             select: {
-              batchesCreated: true,
               qualityTests: true,
               supplyChainEvents: true,
             },
@@ -83,14 +82,18 @@ export async function getUserById(req: Request, res: Response): Promise<void> {
         role: true,
         isActive: true,
         createdAt: true,
-        batchesCreated: {
-          select: { id: true, name: true, herbName: true, status: true, createdAt: true },
-          orderBy: { createdAt: 'desc' },
-          take: 10,
+        producerProfile: {
+          select: {
+            id: true,
+            batches: {
+              select: { id: true, batchNumber: true, status: true, createdAt: true },
+              orderBy: { createdAt: 'desc' },
+              take: 10,
+            },
+          },
         },
         _count: {
           select: {
-            batchesCreated: true,
             qualityTests: true,
             supplyChainEvents: true,
           },
@@ -110,7 +113,7 @@ export async function getUserById(req: Request, res: Response): Promise<void> {
   }
 }
 
-export async function toggleUserStatus(req: AuthRequest, res: Response): Promise<void> {
+export async function toggleUserStatus(req: AuthenticatedRequest, res: Response): Promise<void> {
   try {
     const id = getParamString(req.params.id)
     if (!id) {

@@ -131,3 +131,20 @@
   }
 }
 
+.dashboard-theme {
+  --background: #F7F6F1;
+  --sidebar: #153228;
+  --sidebar-foreground: #E5EDE7;
+  --sidebar-primary: #2F5D4E;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #2F5D4E;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #1F4536;
+  --sidebar-ring: #2F5D4E;
+  --primary: #153228;
+  --primary-foreground: #FFFFFF;
+}
+
+.dashboard-theme button:has(svg.lucide-sun) {
+  display: none;
+}
