@@ -2,7 +2,7 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { useLabData, type LabBatchFullStatus } from '../_store/LabDataContext'
+import { useLabData, type LabBatchFullStatus } from '@/features/lab/store/LabDataContext'
 
 const statusStyles: Record<LabBatchFullStatus, string> = {
   approved: 'bg-green-100 text-green-800 hover:bg-green-100',

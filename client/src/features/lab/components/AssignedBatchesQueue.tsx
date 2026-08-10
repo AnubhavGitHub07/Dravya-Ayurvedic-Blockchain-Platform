@@ -1,6 +1,6 @@
 'use client'
 
-import { useLabData } from '../_store/LabDataContext'
+import { useLabData } from '@/features/lab/store/LabDataContext'
 import { AssignedBatchCard } from './AssignedBatchCard'
 
 export function AssignedBatchesQueue() {

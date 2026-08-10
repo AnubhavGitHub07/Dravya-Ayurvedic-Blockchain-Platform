@@ -1,6 +1,6 @@
 import { StatCard } from '@/components/shared/StatCard'
 import { FlaskConical, CheckCircle2, Timer } from 'lucide-react'
-import { labStats } from '../_data/labStats'
+import { labStats } from '@/features/lab/data/labStats'
 
 export function LabStats() {
   return (

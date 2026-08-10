@@ -3,7 +3,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import { Download } from 'lucide-react'
-import { useLabData } from '../_store/LabDataContext'
+import { useLabData } from '@/features/lab/store/LabDataContext'
 
 export default function CertificatesPage() {
   const { batches } = useLabData()

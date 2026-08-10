@@ -1,8 +1,18 @@
+import { LabStats } from '@/features/lab/components/LabStats'
+import { AssignedBatchesQueue } from '@/features/lab/components/AssignedBatchesQueue'
+
 export default function LabDashboardPage() {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold">Lab Dashboard</h1>
-      <p>Welcome to the lab dashboard.</p>
+    <div className="flex-1 space-y-6">
+      <div>
+        <h2 className="text-3xl font-bold tracking-tight">Laboratory Dashboard</h2>
+        <p className="text-muted-foreground">Testing activity overview</p>
+      </div>
+      <LabStats />
+      <div>
+        <h3 className="text-lg font-semibold mb-3">Awaiting Review</h3>
+        <AssignedBatchesQueue />
+      </div>
     </div>
   )
 }

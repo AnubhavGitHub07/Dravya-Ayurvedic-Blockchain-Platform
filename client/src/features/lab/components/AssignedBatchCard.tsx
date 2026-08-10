@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { useLabData, type LabBatchRecord } from '../_store/LabDataContext'
+import { useLabData, type LabBatchRecord } from '@/features/lab/store/LabDataContext'
 
 export function AssignedBatchCard({ batch }: { batch: LabBatchRecord }) {
   const { resolveBatch } = useLabData()
