@@ -22,6 +22,7 @@ const initialShipments: Shipment[] = [
 interface ShipmentDataContextValue {
   shipments: Shipment[]
   updateShipmentStatus: (id: string, status: ShipmentStatus) => void
+  addShipment: (shipment: Omit<Shipment, 'status'>) => void
 }
 
 const ShipmentDataContext = createContext<ShipmentDataContextValue | null>(null)
@@ -33,8 +34,12 @@ export function ShipmentDataProvider({ children }: { children: ReactNode }) {
     setShipments((prev) => prev.map((s) => (s.id === id ? { ...s, status } : s)))
   }
 
+  function addShipment(shipment: Omit<Shipment, 'status'>) {
+    setShipments((prev) => [...prev, { ...shipment, status: 'created' }])
+  }
+
   return (
-    <ShipmentDataContext.Provider value={{ shipments, updateShipmentStatus }}>
+    <ShipmentDataContext.Provider value={{ shipments, updateShipmentStatus, addShipment }}>
       {children}
     </ShipmentDataContext.Provider>
   )
