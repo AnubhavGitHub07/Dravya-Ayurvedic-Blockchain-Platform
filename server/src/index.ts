@@ -14,6 +14,8 @@ import herbRoutes from './routes/herb.routes'
 import authorityRoutes from './routes/authority.routes'
 import adminRoutes from './routes/admin.routes'
 import labRoutes from './routes/lab.routes'
+import blockchainRoutes from './routes/blockchain.routes'
+import distributorRoutes from './routes/distributor.routes'
 
 const app = express()
 const PORT = process.env.PORT || 8000
@@ -40,6 +42,8 @@ app.get('/api/health', (_req, res) => {
 
 // ─── Routes ─────────────────────────────────────────────
 
+import publicRoutes from './routes/public.routes'
+
 app.use('/api/auth', authRoutes)
 app.use('/api/producers', producerRoutes)
 app.use('/api/herbs', herbRoutes)
@@ -49,6 +53,9 @@ app.use('/api/authority', authorityRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/lab', labRoutes)
 app.use('/api/test', testRoutes)
+app.use('/api/blockchain', blockchainRoutes)
+app.use('/api/public', publicRoutes)
+app.use('/api/distributors', distributorRoutes)
 
 // ─── 404 Handler ────────────────────────────────────────
 

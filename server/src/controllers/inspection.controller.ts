@@ -3,7 +3,9 @@ import { prisma } from '../lib/prisma'
 import { sendSuccess, sendError } from '../lib/response'
 import { AuthenticatedRequest } from '../middleware/auth.middleware'
 import { recordInspectionSchema, rejectInspectionSchema } from '../lib/validators'
-
+import { BlockchainService } from '../services/blockchain.service'
+import { HashingService } from '../services/hashing.service'
+import { Role } from '@prisma/client'
 // ─── PRODUCER ROUTES ─────────────────────────────────────
 
 export async function requestLotInspection(req: AuthenticatedRequest, res: Response): Promise<void> {
@@ -203,6 +205,12 @@ export async function approveLotInspection(req: AuthenticatedRequest, res: Respo
       return updatedInspection
     })
 
+    // STEP 6: Automatic Blockchain Anchoring
+    const payload = HashingService.getBatchInspectionPayload(result)
+    BlockchainService.anchorRecord('BATCH_INSPECTION', result.id, 1, payload, req.user!.role as Role).catch(err => {
+      console.error('Failed to trigger async blockchain anchor for BI:', err)
+    })
+
     sendSuccess(res, 'Lot inspection approved.', { inspection: result })
   } catch (error) {
     console.error('Approve lot inspection error:', error)
@@ -260,6 +268,12 @@ export async function rejectLotInspection(req: AuthenticatedRequest, res: Respon
       })
 
       return updatedInspection
+    })
+
+    // STEP 6: Automatic Blockchain Anchoring
+    const payload = HashingService.getBatchInspectionPayload(result)
+    BlockchainService.anchorRecord('BATCH_INSPECTION', result.id, 1, payload, req.user!.role as Role).catch(err => {
+      console.error('Failed to trigger async blockchain anchor for BI:', err)
     })
 
     sendSuccess(res, 'Lot inspection rejected.', { inspection: result })

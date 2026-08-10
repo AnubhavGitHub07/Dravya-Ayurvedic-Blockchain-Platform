@@ -3,7 +3,9 @@ import { prisma } from '../lib/prisma'
 import { sendSuccess, sendError } from '../lib/response'
 import { AuthenticatedRequest } from '../middleware/auth.middleware'
 import { addTestResultSchema, generateLabReportSchema } from '../lib/validators'
-
+import { BlockchainService } from '../services/blockchain.service'
+import { HashingService } from '../services/hashing.service'
+import { Role } from '@prisma/client'
 // ─── DASHBOARD & READ ────────────────────────────────────
 
 export async function getLabDashboard(req: AuthenticatedRequest, res: Response): Promise<void> {
@@ -226,6 +228,12 @@ export async function completeTest(req: AuthenticatedRequest, res: Response): Pr
       return t
     })
 
+    // STEP 6: Automatic Blockchain Anchoring
+    const payload = HashingService.getQualityTestPayload(updated)
+    BlockchainService.anchorRecord('QUALITY_TEST', updated.id, 1, payload, req.user!.role as Role).catch(err => {
+      console.error('Failed to trigger async blockchain anchor for QT:', err)
+    })
+
     sendSuccess(res, 'Test completed successfully.', { test: updated })
   } catch (error) {
     console.error('Complete test error:', error)
@@ -296,6 +304,12 @@ export async function finalizeReport(req: AuthenticatedRequest, res: Response): 
     const updated = await prisma.labReport.update({
       where: { id: reportId },
       data: { status: 'FINALIZED', finalizedAt: new Date() }
+    })
+
+    // STEP 6: Automatic Blockchain Anchoring
+    const payload = HashingService.getLabReportPayload(updated)
+    BlockchainService.anchorRecord('LAB_REPORT', updated.id, 1, payload, req.user!.role as Role).catch(err => {
+      console.error('Failed to trigger async blockchain anchor for LR:', err)
     })
 
     sendSuccess(res, 'Report finalized successfully.', { report: updated })

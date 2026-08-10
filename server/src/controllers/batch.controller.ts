@@ -348,3 +348,63 @@ export async function submitBatch(req: AuthenticatedRequest, res: Response): Pro
     sendError(res, 'Internal server error.', 500)
   }
 }
+
+export async function getBatchSupplyChain(req: AuthenticatedRequest, res: Response): Promise<void> {
+  try {
+    const id = getParamString(req.params.id)
+    if (!id) {
+      sendError(res, 'Batch ID is required.', 400)
+      return
+    }
+
+    const userId = req.user!.id
+    const userRole = req.user!.role
+
+    const batch = await prisma.batch.findUnique({
+      where: { id },
+      include: { 
+        supplyChainEvents: { orderBy: { timestamp: 'asc' } },
+        producerProfile: true,
+        distributorAssignments: true
+      },
+    })
+
+    if (!batch) {
+      sendError(res, 'Batch not found.', 404)
+      return
+    }
+
+    // Ownership checks
+    if (userRole === 'PRODUCER') {
+      if (batch.producerProfile.userId !== userId) {
+        sendError(res, 'Forbidden. You do not have permission to view this batch.', 403)
+        return
+      }
+    } else if (userRole === 'DISTRIBUTOR') {
+      const isAssigned = batch.distributorAssignments.some(a => a.distributorId === userId)
+      if (!isAssigned) {
+        sendError(res, 'Forbidden. You do not have permission to view this batch.', 403)
+        return
+      }
+    }
+    // Admin, Lab, Verification Authority can view any batch
+
+    const timeline = batch.supplyChainEvents.map((event) => ({
+      type: event.action,
+      timestamp: event.timestamp,
+      quantity: event.quantity,
+      unit: event.unit,
+      location: event.location,
+      status: 'COMPLETED'
+    }))
+
+    sendSuccess(res, 'Supply chain timeline retrieved successfully.', {
+      batchNumber: batch.batchNumber,
+      currentStatus: batch.status,
+      events: timeline
+    })
+  } catch (error) {
+    console.error('Get supply chain error:', error)
+    sendError(res, 'Internal server error.', 500)
+  }
+}

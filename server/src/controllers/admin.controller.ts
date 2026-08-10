@@ -141,3 +141,76 @@ export async function assignLabTest(req: AuthenticatedRequest, res: Response): P
     sendError(res, 'Internal server error.', 500)
   }
 }
+
+import { QRService } from '../services/qr.service'
+
+export async function generateBatchQR(req: AuthenticatedRequest, res: Response): Promise<void> {
+  try {
+    const id = req.params.id as string
+    
+    // The service handles eligibility validation and duplicates
+    const qrData = await QRService.generateQRForBatch(id)
+    
+    sendSuccess(res, 'QR code generated successfully', qrData, 201)
+  } catch (error: any) {
+    console.error('Generate QR error:', error)
+    sendError(res, error.message || 'Internal server error.', 400)
+  }
+}
+
+export async function getBatchQR(req: AuthenticatedRequest, res: Response): Promise<void> {
+  try {
+    const batchId = req.params.id as string
+    
+    const qr = await prisma.qRCode.findUnique({
+      where: { batchId }
+    })
+
+    if (!qr) {
+      sendError(res, 'No QR code found for this batch.', 404)
+      return
+    }
+
+    sendSuccess(res, 'QR code retrieved.', { qr })
+  } catch (error: any) {
+    console.error('Get QR error:', error)
+    sendError(res, 'Internal server error.', 500)
+  }
+}
+
+export async function revokeBatchQR(req: AuthenticatedRequest, res: Response): Promise<void> {
+  try {
+    const adminId = req.user!.id
+    const qrId = req.params.id as string
+    
+    const revokedQR = await QRService.revokeQR(qrId, adminId)
+    
+    sendSuccess(res, 'QR code revoked successfully', { qr: revokedQR })
+  } catch (error: any) {
+    console.error('Revoke QR error:', error)
+    sendError(res, error.message || 'Internal server error.', 400)
+  }
+}
+
+import { SupplyChainService } from '../services/supply-chain.service'
+import { assignDistributorSchema } from '../lib/validators'
+
+export async function assignDistributor(req: AuthenticatedRequest, res: Response): Promise<void> {
+  try {
+    const adminId = req.user!.id
+    const batchId = req.params.id as string
+    
+    const parsed = assignDistributorSchema.safeParse(req.body)
+    if (!parsed.success) {
+      sendError(res, parsed.error.errors[0].message, 400)
+      return
+    }
+
+    const assignment = await SupplyChainService.assignDistributor(batchId, parsed.data.distributorId, adminId)
+    
+    sendSuccess(res, 'Distributor assigned successfully', { assignment }, 201)
+  } catch (error: any) {
+    console.error('Assign distributor error:', error)
+    sendError(res, error.message || 'Internal server error.', 400)
+  }
+}

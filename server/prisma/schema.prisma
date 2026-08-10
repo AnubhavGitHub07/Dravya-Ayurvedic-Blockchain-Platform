@@ -33,6 +33,8 @@ enum BatchStatus {
   READY_FOR_LAB
   QUALITY_APPROVED
   QUALITY_REJECTED
+  IN_TRANSIT
+  DELIVERED
 }
 
 enum RequestStatus {
@@ -89,11 +91,13 @@ model User {
 
   // Relations
   producerProfile       ProducerProfile?
+  distributorProfile    DistributorProfile?
   qualityTests          QualityTest[]          @relation("TestConductor")
   supplyChainEvents     SupplyChainEvent[]     @relation("EventActor")
   assignedVerifications ProducerVerification[] @relation("AssignedAuthority")
   batchInspections      BatchInspection[]      @relation("BatchInspector")
   generatedReports      LabReport[]            @relation("ReportGenerator")
+  assignedDistributions DistributorAssignment[] @relation("AssignedDistributor")
 
   @@map("users")
 }
@@ -161,9 +165,11 @@ model Batch {
   updatedAt         DateTime    @updatedAt
 
   // Relations
-  qualityTests      QualityTest[]
-  supplyChainEvents SupplyChainEvent[]
-  inspections       BatchInspection[]
+  qualityTests           QualityTest[]
+  supplyChainEvents      SupplyChainEvent[]
+  inspections            BatchInspection[]
+  qrCode                 QRCode?
+  distributorAssignments DistributorAssignment[]
 
   @@index([producerProfileId])
   @@index([herbId])
@@ -234,17 +240,22 @@ model LabReport {
 }
 
 model SupplyChainEvent {
-  id          String   @id @default(cuid())
-  action      String
-  location    String?
-  notes       String?
-  timestamp   DateTime @default(now())
+  id              String   @id @default(cuid())
+  action          String
+  location        String?
+  notes           String?
+  quantity        Float?
+  unit            String?
+  latitude        Float?
+  longitude       Float?
+  referenceNumber String?
+  timestamp       DateTime @default(now())
 
   // Relations
-  batchId     String
-  batch       Batch    @relation(fields: [batchId], references: [id], onDelete: Cascade)
-  actorId     String
-  actor       User     @relation("EventActor", fields: [actorId], references: [id])
+  batchId         String
+  batch           Batch    @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  actorId         String
+  actor           User     @relation("EventActor", fields: [actorId], references: [id])
 
   @@map("supply_chain_events")
 }
@@ -320,4 +331,104 @@ model BatchInspection {
   @@index([batchId])
   @@index([authorityId])
   @@map("batch_inspections")
+}
+
+// ─── Blockchain ──────────────────────────────────────────────
+
+enum BlockchainRecordStatus {
+  PENDING
+  SUBMITTED
+  CONFIRMED
+  FAILED
+}
+
+model BlockchainRecord {
+  id            String                 @id @default(cuid())
+  entityType    String
+  entityId      String
+  recordVersion Int
+  dataHash      String
+  transactionId String?
+  blockNumber   String?
+  network       String?
+  channel       String?
+  chaincode     String?
+  status        BlockchainRecordStatus @default(PENDING)
+  anchoredAt    DateTime?
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+
+  @@unique([entityType, entityId, recordVersion])
+  @@index([entityType, entityId])
+  @@index([status])
+  @@map("blockchain_records")
+}
+
+// ─── Public Traceability (Step 7) ────────────────────────
+
+enum QRCodeStatus {
+  ACTIVE
+  REVOKED
+}
+
+model QRCode {
+  id        String       @id @default(cuid())
+  code      String       @unique
+  batchId   String       @unique
+  batch     Batch        @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  status    QRCodeStatus @default(ACTIVE)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  revokedAt DateTime?
+  revokedBy String?
+
+  @@index([status])
+  @@map("qr_codes")
+}
+
+// ─── Supply Chain & Distribution (Step 8) ────────────────
+
+enum AssignmentStatus {
+  ASSIGNED
+  ACCEPTED
+  COMPLETED
+  CANCELLED
+}
+
+model DistributorProfile {
+  id               String   @id @default(cuid())
+  userId           String   @unique
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  address          String
+  city             String
+  district         String
+  state            String
+  pincode          String
+  latitude         Float?
+  longitude        Float?
+  licenseNumber    String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("distributor_profiles")
+}
+
+model DistributorAssignment {
+  id            String           @id @default(cuid())
+  batchId       String
+  batch         Batch            @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  distributorId String
+  distributor   User             @relation("AssignedDistributor", fields: [distributorId], references: [id])
+  assignedBy    String
+  assignedAt    DateTime         @default(now())
+  status        AssignmentStatus @default(ASSIGNED)
+  acceptedAt    DateTime?
+  completedAt   DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@index([batchId])
+  @@index([distributorId])
+  @@index([status])
+  @@map("distributor_assignments")
 }

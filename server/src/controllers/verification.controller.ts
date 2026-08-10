@@ -3,7 +3,9 @@ import { prisma } from '../lib/prisma'
 import { sendSuccess, sendError } from '../lib/response'
 import { AuthenticatedRequest } from '../middleware/auth.middleware'
 import { approveVerificationSchema, rejectVerificationSchema } from '../lib/validators'
-
+import { BlockchainService } from '../services/blockchain.service'
+import { HashingService } from '../services/hashing.service'
+import { Role } from '@prisma/client'
 // ─── PRODUCER ROUTES ─────────────────────────────────────
 
 export async function requestVerification(req: AuthenticatedRequest, res: Response): Promise<void> {
@@ -195,6 +197,12 @@ export async function approveVerification(req: AuthenticatedRequest, res: Respon
       return updatedVer
     })
 
+    // STEP 6: Automatic Blockchain Anchoring
+    const payload = HashingService.getProducerVerificationPayload(result)
+    BlockchainService.anchorRecord('PRODUCER_VERIFICATION', result.id, 1, payload, req.user!.role as Role).catch(err => {
+      console.error('Failed to trigger async blockchain anchor for PV:', err)
+    })
+
     sendSuccess(res, 'Producer verification approved successfully.', { verification: result })
   } catch (error) {
     console.error('Approve verification error:', error)
@@ -254,6 +262,12 @@ export async function rejectVerification(req: AuthenticatedRequest, res: Respons
       })
 
       return updatedVer
+    })
+
+    // STEP 6: Automatic Blockchain Anchoring
+    const payload = HashingService.getProducerVerificationPayload(result)
+    BlockchainService.anchorRecord('PRODUCER_VERIFICATION', result.id, 1, payload, req.user!.role as Role).catch(err => {
+      console.error('Failed to trigger async blockchain anchor for PV:', err)
     })
 
     sendSuccess(res, 'Producer verification rejected.', { verification: result })

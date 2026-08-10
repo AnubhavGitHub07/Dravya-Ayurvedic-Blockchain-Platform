@@ -28,7 +28,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-white relative font-sans overflow-x-hidden">
       <LandingNavbar />
-
+ 
       <div className="relative flex-1 flex flex-col w-full">
         {/* Logo Watermark Background */}
         <div
@@ -87,7 +87,7 @@ export default function HomePage() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="w-full sm:w-auto border-[#184E48]/20 bg-white hover:bg-slate-50 text-[#184E48] rounded-xl px-8 py-6 text-[16px] font-bold shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+                  className="w-full sm:w-auto border-[#184E48] bg-white hover:bg-slate-50 text-[#184E48] rounded-xl px-8 py-6 text-[16px] font-bold shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
                 >
                   Get Started
                 </Button>
@@ -95,47 +95,45 @@ export default function HomePage() {
             </div>
 
             {/* Unified Feature Bar */}
-            <div className="bg-[#184E48] rounded-2xl p-1 shadow-[0_20px_40px_rgb(24,78,72,0.15)] w-fit relative overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0 opacity-50 group-hover:opacity-100 transition-opacity duration-700"></div>
-
-              <div className="flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-white/10 relative z-10">
+            <div className="bg-white rounded-2xl p-1.5 border border-[#184E48]   shadow-xl  w-fit relative overflow-hidden group">
+              <div className="flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-slate-200/60 relative z-10">
 
                 {/* Feature 1 */}
-                <div className="flex items-center gap-3 py-3 px-5 hover:bg-white/5 transition-colors duration-300 rounded-xl sm:rounded-none sm:rounded-l-xl">
-                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                <div className="flex items-center gap-3 py-3 px-5 hover:bg-slate-50 transition-colors duration-300 rounded-xl sm:rounded-none sm:rounded-l-xl">
+                  <div className="w-10 h-10 rounded-full bg-[#184E48] flex items-center justify-center shadow-sm shadow-[#184E48]/20 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                     <ShieldCheck className="w-5 h-5 text-white" />
                   </div>
                   <div className="pr-2">
-                    <h3 className="font-bold text-white text-[14px] leading-tight mb-0.5">
+                    <h3 className="font-bold text-slate-900 text-[14px] leading-tight mb-0.5">
                       Traceability
                     </h3>
-                    <p className="text-[12px] text-white/70 font-medium whitespace-nowrap">End-to-End verified</p>
+                    <p className="text-[12px] text-slate-500 font-medium whitespace-nowrap">End-to-End verified</p>
                   </div>
                 </div>
 
                 {/* Feature 2 */}
-                <div className="flex items-center gap-3 py-3 px-5 hover:bg-white/5 transition-colors duration-300">
-                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                <div className="flex items-center gap-3 py-3 px-5 hover:bg-slate-50 transition-colors duration-300">
+                  <div className="w-10 h-10 rounded-full bg-[#184E48] flex items-center justify-center shadow-sm shadow-[#184E48]/20 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                     <FlaskConical className="w-5 h-5 text-white" />
                   </div>
                   <div className="pr-2">
-                    <h3 className="font-bold text-white text-[14px] leading-tight mb-0.5">
+                    <h3 className="font-bold text-slate-900 text-[14px] leading-tight mb-0.5">
                       Quality
                     </h3>
-                    <p className="text-[12px] text-white/70 font-medium whitespace-nowrap">100% lab assured</p>
+                    <p className="text-[12px] text-slate-500 font-medium whitespace-nowrap">100% lab assured</p>
                   </div>
                 </div>
 
                 {/* Feature 3 */}
-                <div className="flex items-center gap-3 py-3 px-5 hover:bg-white/5 transition-colors duration-300 rounded-xl sm:rounded-none sm:rounded-r-xl">
-                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                <div className="flex items-center gap-3 py-3 px-5 hover:bg-slate-50 transition-colors duration-300 rounded-xl sm:rounded-none sm:rounded-r-xl">
+                  <div className="w-10 h-10 rounded-full bg-[#184E48] flex items-center justify-center shadow-sm shadow-[#184E48]/20 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                     <LinkIcon className="w-5 h-5 text-white" />
                   </div>
                   <div className="pr-2">
-                    <h3 className="font-bold text-white text-[14px] leading-tight mb-0.5">
+                    <h3 className="font-bold text-slate-900 text-[14px] leading-tight mb-0.5">
                       Security
                     </h3>
-                    <p className="text-[12px] text-white/70 font-medium whitespace-nowrap">Tamper-proof records</p>
+                    <p className="text-[12px] text-slate-500 font-medium whitespace-nowrap">Tamper-proof records</p>
                   </div>
                 </div>
 
@@ -154,10 +152,10 @@ export default function HomePage() {
 
 
 
-      {/* Video Demo Section */}
-      <section className="relative py-16 lg:py-24 overflow-hidden bg-slate-50/50">
+      {/* Video Demo Section (Warmer White --ww background) */}
+      <section className="relative py-16 lg:py-24 overflow-hidden bg-[#E1E9E1]/30 border-y border-[#184E48]/10">
         <div className="absolute inset-0 z-0">
-          <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
+          <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[800px] h-[800px] bg-[#184E48]/5 rounded-full blur-[100px] pointer-events-none"></div>
 
           {/* Decorative Floating Leaves */}
           <div className="absolute -top-10 right-12 w-[120px] lg:w-[180px] pointer-events-none z-0 opacity-15 mix-blend-multiply animate-pulse">
@@ -219,21 +217,28 @@ export default function HomePage() {
             </div>
 
             {/* Right Video Container */}
-            <div className="relative group w-full max-w-[850px] mx-auto lg:col-span-7 lg:ml-auto">
-              <div className="absolute -inset-4 bg-gradient-to-r from-primary/30 via-[#184E48]/30 to-primary/30 rounded-[2.5rem] blur-2xl opacity-40 group-hover:opacity-100 group-hover:animate-pulse transition duration-1000"></div>
+            <div className="relative group w-full max-w-[850px] mx-auto lg:col-span-7 lg:ml-auto isolate">
+              {/* Background Glow */}
+              <div className="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-r from-[#184E48]/20 via-emerald-500/10 to-[#184E48]/20 blur-2xl opacity-40 group-hover:opacity-100 transition-opacity duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"></div>
 
-              <div className="relative rounded-[2rem] border border-white/60 bg-white/40 p-4 shadow-[0_20px_60px_rgb(0,0,0,0.08)] backdrop-blur-xl transition-all duration-700 hover:scale-[1.02] hover:-translate-y-2 hover:shadow-[0_30px_80px_rgb(24,78,72,0.15)]">
-                <div className="absolute top-8 left-8 flex gap-2 z-20">
+              {/* Main Card */}
+              <div className="relative rounded-[2rem] border border-white/60 bg-white/40 p-4 shadow-[0_20px_60px_rgb(0,0,0,0.08)] backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.025] hover:-translate-y-2 hover:shadow-[0_30px_80px_rgb(24,78,72,0.18)] transform-gpu [backface-visibility:hidden] [will-change:transform,box-shadow]">
+                <div className="absolute top-8 left-8 flex gap-2 z-20 pointer-events-none">
                   <div className="w-3 h-3 rounded-full bg-red-400/80 border border-white/20 shadow-sm"></div>
                   <div className="w-3 h-3 rounded-full bg-amber-400/80 border border-white/20 shadow-sm"></div>
                   <div className="w-3 h-3 rounded-full bg-emerald-400/80 border border-white/20 shadow-sm"></div>
                 </div>
 
-                <div className="overflow-hidden rounded-[1.5rem] border border-slate-100/50 bg-[#1e293b] shadow-inner relative">
-                  <img
-                    src="/dravya_demo_slow.gif"
-                    alt="Dravya platform demo"
-                    className="w-full aspect-[16/9] object-cover object-center opacity-95 transition-opacity duration-500 hover:opacity-100"
+                <div className="overflow-hidden rounded-[1.5rem] border border-slate-100/50 bg-[#1e293b] shadow-inner relative transform-gpu">
+                  <video
+                    src="/Cinematic_second_product_d.mp4"
+                    title="Dravya platform demo"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    controls
+                    className="w-full aspect-[16/9] block object-cover rounded-[1.5rem] cursor-pointer"
                   />
                 </div>
               </div>
@@ -243,10 +248,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* AI Verification Section */}
+      {/* AI Verification Section (Pure White background) */}
       <AIVerification />
 
-      {/* How It Works Section */}
+      {/* How It Works Section (Warmer White --ww background) */}
       <HowItWorks />
 
       <Footer />

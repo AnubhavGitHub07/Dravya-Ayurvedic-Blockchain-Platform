@@ -147,68 +147,56 @@ export default function VerifyPage() {
 </nav>
     </div>
 
-        <div
-          className="absolute inset-0 z-0 opacity-[0.07] pointer-events-none mix-blend-multiply flex items-center justify-center"
-          style={{
-            backgroundImage: 'url("/logo.png")',
-            backgroundSize: 'min(70vw, 600px)',
-            backgroundPosition: ' 50% 8%',
-            backgroundRepeat: 'no-repeat',
-          }}>
-          </div>
+
 
       <div className="flex flex-col items-center justify-center px-6 py-24 relative z-10 max-w-2xl mx-auto text-center">
-        <div className="h-16 w-16 flex items-center justify-center bg-accent rounded-2xl mb-6 shadow-lg shadow-accent/30 rotate-3">
-          <BadgeCheck className="h-8 w-8 text-white" />
-        </div>
 
-        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent bg-accent/10 border border-accent/20 rounded-full px-3 py-1 mb-4">
-          <Sparkles className="h-3 w-3" /> On-chain verified
-        </span>
-
-        <h1 className="text-2xl md:text-4xl font-extrabold tracking-tight text-[#184E48] leading-[1.1] mb-3 font-serif">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#184E48] leading-[1.1] mb-4 font-serif">
           Verify Your Batch
         </h1>
-        <p className="text-sm md:text-base text-gray-600 mb-10 max-w-md">
+        <p className="text-base md:text-lg text-gray-600 mb-10 max-w-md mx-auto">
           Enter a batch ID or scan the QR code on the product to trace its full journey from farm to shelf.
         </p>
 
-        <div className="w-full bg-[var(--ww)] border-3 border-[#184E48]/40 shadow-xl shadow-accent/5 rounded-2xl p-8">
+        <div className="w-full bg-white/70 backdrop-blur-xl border border-white/40 shadow-[0_8px_40px_rgb(0,0,0,0.08)] rounded-[24px] p-6 md:p-8">
           <div className="flex flex-col gap-4">
-            <div className="flex flex-col sm:flex-row gap-2">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Input
                 value={batchId}
                 onChange={(e) => setBatchId(e.target.value)}
                 placeholder="Enter batch ID (e.g. DRV-2026-00123)"
-                className="!bg-white/20 border border-accent/20 text-black placeholder:text-slate-500 h-11 rounded-xl shadow-sm focus-visible:ring-primary/40"
+                className="bg-white/80 border-slate-200 text-slate-900 placeholder:text-slate-400 h-12 rounded-xl shadow-sm focus-visible:ring-[#184E48]/20 focus-visible:border-[#184E48] text-base"
               />
-              <Button className="h-11 px-6 bg-accent hover:bg-accent/90 rounded-xl shadow-md shadow-accent/20 transition-transform hover:scale-[1.02]">
+              <Button className="h-12 px-8 bg-[#184E48] hover:bg-[#184E48]/90 text-white rounded-xl shadow-md transition-all active:scale-[0.98] font-semibold text-base shrink-0">
                 <Search className="h-4 w-4 mr-2" />
                 Verify
               </Button>
             </div>
 
-            <div className="flex items-center gap-3 my-1">
-              <div className="flex-1 h-px bg-accent/15" />
-              <span className="text-xs text-gray-500">OR</span>
-              <div className="flex-1 h-px bg-accent/15" />
+            <div className="flex items-center gap-4 my-2">
+              <div className="flex-1 h-px bg-slate-200" />
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">OR</span>
+              <div className="flex-1 h-px bg-slate-200" />
             </div>
 
             <Button
               onClick={startScan}
-              className="h-11 rounded-xl bg-accent hover:bg-accent/90 text-white shadow-md shadow-accent/20 transition-transform hover:scale-[1.02]"
+              variant="outline"
+              className="h-12 w-full rounded-xl border-slate-200 bg-white hover:bg-slate-50 text-slate-700 shadow-sm transition-all active:scale-[0.98] font-semibold text-base"
             >
-              <ScanLine className="h-4 w-4 mr-2" />
+              <ScanLine className="h-5 w-5 mr-2 text-[#184E48]" />
               Scan QR Code
             </Button>
           </div>
         </div>
 
-        <div className="w-full mt-10 p-6 bg-accent/5 border border-accent/15 rounded-2xl text-left flex gap-3">
-          <ShieldCheck className="h-5 w-5 text-accent shrink-0 mt-0.5" />
+        <div className="w-full mt-10 p-6 bg-[#184E48] rounded-2xl text-left flex gap-4 shadow-xl border border-white/10">
+          <div className="h-10 w-10 shrink-0 bg-white/10 rounded-full flex items-center justify-center">
+            <ShieldCheck className="h-5 w-5 text-teal-200" />
+          </div>
           <div>
-            <h3 className="font-bold text-accent text-sm mb-1">How it works</h3>
-            <p className="text-sm text-gray-600">
+            <h3 className="font-bold text-white text-sm mb-1">How it works</h3>
+            <p className="text-sm text-slate-200 leading-relaxed">
               Every batch is recorded on-chain at each stage — collection, processing, distribution, and sale.
               Verifying a batch shows you its complete, tamper-proof history.
             </p>

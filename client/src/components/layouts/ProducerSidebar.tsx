@@ -1,0 +1,55 @@
+'use client'
+
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+} from '@/components/ui/sidebar'
+import { Home, Package, Sprout } from 'lucide-react'
+import Link from 'next/link'
+
+const navItems = [
+  { title: 'Dashboard', url: '/dashboard/producer', icon: Home },
+  { title: 'My Batches', url: '/dashboard/producer/batches', icon: Package },
+  { title: 'Register Batch', url: '/dashboard/producer/register', icon: Sprout },
+]
+
+export function ProducerSidebar() {
+  return (
+    <Sidebar>
+      <SidebarHeader>
+        <div className="flex items-center gap-2 p-2">
+          <div className="h-8 w-8 bg-primary rounded-md flex items-center justify-center text-primary-foreground font-bold">
+            D
+          </div>
+          <span className="text-lg font-bold">Dravya</span>
+        </div>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Producer</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {navItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <Link href={item.url}>
+                    <SidebarMenuButton>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </SidebarMenuButton>
+                  </Link>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
+  )
+}

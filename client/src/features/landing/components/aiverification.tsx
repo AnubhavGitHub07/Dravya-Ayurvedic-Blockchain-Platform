@@ -5,7 +5,7 @@ import { FloatingLeaf } from "./FloatingLeaf"
 
 export function AIVerification() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-white to-[#F7FAF7] py-24 lg:py-32">
+    <section className="relative overflow-hidden bg-white py-24 lg:py-32">
       <style>
         {`
           @keyframes scan {
@@ -30,7 +30,7 @@ export function AIVerification() {
         </div>
         
         {/* Subtle Floating Leaves */}
-        <div className="absolute top-[20%] right-[10%] w-[80px] lg:w-[120px] opacity-30 mix-blend-multiply animate-[pulse_6s_ease-in-out_infinite]">
+        <div className="absolute top-[20%] right-[48%] w-[80px] lg:w-[120px] opacity-30 mix-blend-multiply animate-[pulse_6s_ease-in-out_infinite]">
           <FloatingLeaf className="w-full h-auto text-[#184E48]" rotate={45} />
         </div>
         <div className="absolute bottom-[30%] left-[10%] w-[100px] lg:w-[140px] opacity-30 mix-blend-multiply animate-[bounce_8s_ease-in-out_infinite]">
@@ -42,10 +42,7 @@ export function AIVerification() {
         
         {/* Left Side: Context & Content */}
         <div className="flex flex-col justify-center">
-          <span className="mb-6 inline-flex items-center gap-2 self-start rounded-full border border-[#1a4a2c]/20 bg-[#1a4a2c]/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#1a4a2c] shadow-sm">
-            <BrainCircuit className="h-4 w-4" />
-            AI-Powered Verification
-          </span>
+          
 
           <h2 className="text-4xl font-extrabold tracking-tight text-slate-900 md:text-5xl lg:text-6xl">
             Identify. Analyze.
