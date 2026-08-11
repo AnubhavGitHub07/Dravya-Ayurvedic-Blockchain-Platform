@@ -15,9 +15,9 @@ import { Home, FlaskConical, FileCheck } from 'lucide-react'
 import Link from 'next/link'
 
 const navItems = [
-  { title: 'Dashboard', url: '/lab', icon: Home },
-  { title: 'Assigned Batches', url: '/lab/batches', icon: FlaskConical },
-  { title: 'Certificates', url: '/lab/certificates', icon: FileCheck },
+  { title: 'Dashboard', url: '/dashboard/lab', icon: Home },
+  { title: 'Assigned Batches', url: '/dashboard/lab/batches', icon: FlaskConical },
+  { title: 'Certificates', url: '/dashboard/lab/certificates', icon: FileCheck },
 ]
 
 export function LabSidebar() {
