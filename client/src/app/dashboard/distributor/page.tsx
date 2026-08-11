@@ -1,4 +1,4 @@
-import { DistributorStats } from './_components/DistributorStats'
+import { DistributorStats } from '@/features/distributor/components/DistributorStats'
 
 export default function DistributorDashboardPage() {
   return (

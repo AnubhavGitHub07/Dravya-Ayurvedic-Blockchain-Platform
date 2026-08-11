@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { useShipmentData, type Shipment } from '../_store/ShipmentDataContext'
+import { useShipmentData, type Shipment } from '@/features/distributor/store/ShipmentDataContext'
 
 const steps: Shipment['status'][] = ['created', 'dispatched', 'delivered']
 const stepLabels: Record<Shipment['status'], string> = {

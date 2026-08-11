@@ -15,9 +15,9 @@ import { Home, Truck, Plus } from 'lucide-react'
 import Link from 'next/link'
 
 const navItems = [
-  { title: 'Dashboard', url: '/distributor', icon: Home },
-  { title: 'Assigned Shipments', url: '/distributor/shipments', icon: Truck },
-  { title: 'Create Shipment', url: '/distributor/shipments/new', icon: Plus },
+  { title: 'Dashboard', url: '/dashboard/distributor', icon: Home },
+  { title: 'Assigned Shipments', url: '/dashboard/distributor/shipments', icon: Truck },
+  { title: 'Create Shipment', url: '/dashboard/distributor/shipments/new', icon: Plus },
 ]
 
 export function DistributorSidebar() {

@@ -1,7 +1,7 @@
 'use client'
 
-import { useShipmentData } from '../_store/ShipmentDataContext'
-import { ShipmentCard } from '../_components/ShipmentCard'
+import { useShipmentData } from '@/features/distributor/store/ShipmentDataContext'
+import { ShipmentCard } from '@/features/distributor/components/ShipmentCard'
 
 export default function AssignedShipmentsPage() {
   const { shipments } = useShipmentData()

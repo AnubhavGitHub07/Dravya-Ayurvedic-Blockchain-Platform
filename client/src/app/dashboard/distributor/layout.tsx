@@ -1,7 +1,7 @@
-import { DistributorSidebar } from './_components/DistributorSidebar'
+import { DistributorSidebar } from '@/components/layouts/DistributorSidebar'
 import { TopNavbar } from '@/components/layouts/TopNavbar'
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar'
-import { ShipmentDataProvider } from './_store/ShipmentDataContext'
+import { ShipmentDataProvider } from '@/features/distributor/store/ShipmentDataContext'
 
 export default function DistributorLayout({ children }: { children: React.ReactNode }) {
   return (

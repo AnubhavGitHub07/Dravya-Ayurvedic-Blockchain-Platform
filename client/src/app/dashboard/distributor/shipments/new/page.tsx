@@ -5,8 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useShipmentData } from '../../_store/ShipmentDataContext'
-
+import { useShipmentData } from '@/features/distributor/store/ShipmentDataContext'
 export default function CreateShipmentPage() {
   const router = useRouter()
   const { addShipment } = useShipmentData()
@@ -32,7 +31,7 @@ export default function CreateShipmentPage() {
       quantityKg: Number(form.quantityKg),
       route: `${form.origin} → ${form.destination}`,
     })
-    router.push('/distributor/shipments')
+    router.push('/dashboard/distributor/shipments')
   }
 
   return (

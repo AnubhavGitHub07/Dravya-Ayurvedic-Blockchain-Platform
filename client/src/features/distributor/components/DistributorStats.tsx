@@ -1,6 +1,6 @@
 import { StatCard } from '@/components/shared/StatCard'
 import { Truck, Navigation, PackageCheck, AlertTriangle } from 'lucide-react'
-import { shipmentStats } from '../_data/shipmentStats'
+import { shipmentStats } from '@/features/distributor/data/shipmentStats'
 
 export function DistributorStats() {
   return (
