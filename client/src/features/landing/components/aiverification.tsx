@@ -5,7 +5,7 @@ import { FloatingLeaf } from "./FloatingLeaf"
 
 export function AIVerification() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-white to-[#F7FAF7] py-24 lg:py-32">
+    <section className="relative overflow-hidden bg-white py-24 lg:py-32">
       <style>
         {`
           @keyframes scan {
@@ -28,9 +28,9 @@ export function AIVerification() {
         <div className="absolute bottom-[5%] right-[-5%] w-[300px] md:w-[500px] opacity-20 mix-blend-multiply">
           <LeafSprig className="w-full h-auto text-[#184E48]" flip={true} />
         </div>
-        
+
         {/* Subtle Floating Leaves */}
-        <div className="absolute top-[20%] right-[10%] w-[80px] lg:w-[120px] opacity-30 mix-blend-multiply animate-[pulse_6s_ease-in-out_infinite]">
+        <div className="absolute top-[20%] right-[48%] w-[80px] lg:w-[120px] opacity-30 mix-blend-multiply animate-[pulse_6s_ease-in-out_infinite]">
           <FloatingLeaf className="w-full h-auto text-[#184E48]" rotate={45} />
         </div>
         <div className="absolute bottom-[30%] left-[10%] w-[100px] lg:w-[140px] opacity-30 mix-blend-multiply animate-[bounce_8s_ease-in-out_infinite]">
@@ -39,10 +39,10 @@ export function AIVerification() {
       </div>
 
       <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-2 lg:gap-24">
-        
+
         {/* Left Side: Context & Content */}
         <div className="flex flex-col justify-center">
-          
+
 
           <h2 className="text-4xl font-extrabold tracking-tight text-slate-900 md:text-5xl lg:text-6xl">
             Identify. Analyze.
@@ -101,14 +101,14 @@ export function AIVerification() {
         <div className="relative flex justify-center lg:justify-end mt-10 lg:mt-0">
           {/* Main Glowing Backdrop */}
           <div className="absolute inset-0 bg-[#D5E2DB]/40 blur-3xl rounded-full transform scale-90 pointer-events-none" />
-          
+
           <div className="relative w-full max-w-lg overflow-hidden rounded-[2.5rem] border-[6px] border-white bg-slate-900 shadow-[0_20px_50px_rgba(26,74,44,0.15)] group">
-            
+
             {/* Image Container with tech overlay */}
             <div className="relative h-[550px] w-full overflow-hidden bg-slate-900">
               {/* Subtle grid background */}
               <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CjxwYXRoIGQ9Ik0gMjAgMCBMMCAwIDAgMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIgc3Ryb2tlLXdpZHRoPSIxIi8+Cjwvc3ZnPg==')] z-0" />
-              
+
               <img
                 src="/tul-ki-si.jpg"
                 alt="AI verifying medicinal herb"

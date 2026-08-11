@@ -3,7 +3,11 @@ import { prisma } from '../lib/prisma'
 import { sendSuccess, sendError } from '../lib/response'
 import { AuthenticatedRequest } from '../middleware/auth.middleware'
 import { addTestResultSchema, generateLabReportSchema } from '../lib/validators'
-
+import { BlockchainService } from '../services/blockchain.service'
+import { HashingService } from '../services/hashing.service'
+import { NotificationService } from '../services/notification.service'
+import { AuditService } from '../services/audit.service'
+import { Role } from '@prisma/client'
 // ─── DASHBOARD & READ ────────────────────────────────────
 
 export async function getLabDashboard(req: AuthenticatedRequest, res: Response): Promise<void> {
@@ -100,7 +104,10 @@ export async function receiveSample(req: AuthenticatedRequest, res: Response): P
     const labId = req.user!.id
     const id = req.params.id as string
 
-    const test = await prisma.qualityTest.findUnique({ where: { id } })
+    const test = await prisma.qualityTest.findUnique({ 
+      where: { id },
+      include: { batch: { include: { producerProfile: { select: { userId: true } } } } }
+    })
 
     if (!test) return sendError(res, 'Quality test not found.', 404)
     if (test.labId !== labId) return sendError(res, 'Forbidden. Not assigned to you.', 403)
@@ -120,6 +127,27 @@ export async function receiveSample(req: AuthenticatedRequest, res: Response): P
       }
     })
 
+    NotificationService.createNotification({
+      userId: test.batch.producerProfile.userId,
+      type: 'LAB_SAMPLE_RECEIVED',
+      title: 'Lab Sample Received',
+      message: `Sample for batch ${test.batch.batchNumber} has been received by the lab.`,
+      entityType: 'QUALITY_TEST',
+      entityId: id,
+      eventKey: `LAB_SAMPLE_RECEIVED:${id}`,
+      priority: 'NORMAL'
+    })
+
+    await AuditService.recordStateChange({
+      action: 'LAB_SAMPLE_RECEIVED',
+      actorId: labId,
+      entityType: 'QualityTest',
+      entityId: id,
+      newState: { status: updated.status, sampleId: updated.sampleId },
+      ipAddress: req.ip,
+      userAgent: req.headers['user-agent']
+    })
+
     sendSuccess(res, 'Sample received.', { test: updated })
   } catch (error) {
     console.error('Receive sample error:', error)
@@ -132,7 +160,10 @@ export async function startTest(req: AuthenticatedRequest, res: Response): Promi
     const labId = req.user!.id
     const id = req.params.id as string
 
-    const test = await prisma.qualityTest.findUnique({ where: { id } })
+    const test = await prisma.qualityTest.findUnique({ 
+      where: { id },
+      include: { batch: { include: { producerProfile: { select: { userId: true } } } } }
+    })
 
     if (!test) return sendError(res, 'Quality test not found.', 404)
     if (test.labId !== labId) return sendError(res, 'Forbidden. Not assigned to you.', 403)
@@ -144,6 +175,27 @@ export async function startTest(req: AuthenticatedRequest, res: Response): Promi
         status: 'UNDER_TESTING',
         testingStartedAt: new Date(),
       }
+    })
+
+    NotificationService.createNotification({
+      userId: test.batch.producerProfile.userId,
+      type: 'LAB_TEST_STARTED',
+      title: 'Lab Test Started',
+      message: `Quality testing for batch ${test.batch.batchNumber} has started.`,
+      entityType: 'QUALITY_TEST',
+      entityId: id,
+      eventKey: `LAB_TEST_STARTED:${id}`,
+      priority: 'NORMAL'
+    })
+
+    await AuditService.recordStateChange({
+      action: 'LAB_TEST_STARTED',
+      actorId: labId,
+      entityType: 'QualityTest',
+      entityId: id,
+      newState: { status: updated.status },
+      ipAddress: req.ip,
+      userAgent: req.headers['user-agent']
     })
 
     sendSuccess(res, 'Testing started.', { test: updated })
@@ -160,7 +212,7 @@ export async function addTestResult(req: AuthenticatedRequest, res: Response): P
 
     const validation = addTestResultSchema.safeParse(req.body)
     if (!validation.success) {
-      res.status(400).json({ success: false, message: 'Validation failed.', errors: validation.error.flatten().fieldErrors })
+      sendError(res, 'Validation failed.', 400, validation.error.flatten().fieldErrors)
       return
     }
 
@@ -177,6 +229,16 @@ export async function addTestResult(req: AuthenticatedRequest, res: Response): P
       }
     })
 
+    await AuditService.recordStateChange({
+      action: 'LAB_RESULT_ADDED',
+      actorId: labId,
+      entityType: 'TestResult',
+      entityId: testResult.id,
+      newState: { parameter: testResult.parameter, resultStatus: testResult.resultStatus },
+      ipAddress: req.ip,
+      userAgent: req.headers['user-agent']
+    })
+
     sendSuccess(res, 'Test result added.', { testResult }, 201)
   } catch (error) {
     console.error('Add test result error:', error)
@@ -191,7 +253,10 @@ export async function completeTest(req: AuthenticatedRequest, res: Response): Pr
 
     const test = await prisma.qualityTest.findUnique({
       where: { id },
-      include: { results: true }
+      include: { 
+        results: true,
+        batch: { include: { producerProfile: { select: { userId: true } } } }
+      }
     })
 
     if (!test) return sendError(res, 'Quality test not found.', 404)
@@ -226,6 +291,47 @@ export async function completeTest(req: AuthenticatedRequest, res: Response): Pr
       return t
     })
 
+    // STEP 6: Automatic Blockchain Anchoring
+    const payload = HashingService.getQualityTestPayload(updated)
+    BlockchainService.anchorRecord('QUALITY_TEST', updated.id, 1, payload, req.user!.role as Role).catch(err => {
+      console.error('Failed to trigger async blockchain anchor for QT:', err)
+    })
+
+    NotificationService.createNotification({
+      userId: test.batch.producerProfile.userId,
+      type: 'LAB_TEST_COMPLETED',
+      title: 'Lab Test Completed',
+      message: `Quality testing for batch ${test.batch.batchNumber} is complete.`,
+      entityType: 'QUALITY_TEST',
+      entityId: id,
+      eventKey: `LAB_TEST_COMPLETED:${id}`,
+      priority: 'NORMAL'
+    })
+
+    const passType = overallResult === 'PASS' ? 'LAB_TEST_PASSED' : 'LAB_TEST_FAILED'
+    const priority = overallResult === 'PASS' ? 'NORMAL' : 'HIGH'
+
+    NotificationService.createNotification({
+      userId: test.batch.producerProfile.userId,
+      type: passType,
+      title: overallResult === 'PASS' ? 'Lab Test Passed' : 'Lab Test Failed',
+      message: `Quality testing for batch ${test.batch.batchNumber} has ${overallResult === 'PASS' ? 'passed' : 'failed'}.`,
+      entityType: 'QUALITY_TEST',
+      entityId: id,
+      eventKey: `${passType}:${id}`,
+      priority
+    })
+
+    await AuditService.recordStateChange({
+      action: 'LAB_TEST_COMPLETED',
+      actorId: labId,
+      entityType: 'QualityTest',
+      entityId: id,
+      newState: { status: updated.status, overallResult },
+      ipAddress: req.ip,
+      userAgent: req.headers['user-agent']
+    })
+
     sendSuccess(res, 'Test completed successfully.', { test: updated })
   } catch (error) {
     console.error('Complete test error:', error)
@@ -242,7 +348,7 @@ export async function generateReport(req: AuthenticatedRequest, res: Response): 
 
     const validation = generateLabReportSchema.safeParse(req.body)
     if (!validation.success) {
-      res.status(400).json({ success: false, message: 'Validation failed.', errors: validation.error.flatten().fieldErrors })
+      sendError(res, 'Validation failed.', 400, validation.error.flatten().fieldErrors)
       return
     }
 
@@ -296,6 +402,22 @@ export async function finalizeReport(req: AuthenticatedRequest, res: Response): 
     const updated = await prisma.labReport.update({
       where: { id: reportId },
       data: { status: 'FINALIZED', finalizedAt: new Date() }
+    })
+
+    // STEP 6: Automatic Blockchain Anchoring
+    const payload = HashingService.getLabReportPayload(updated)
+    BlockchainService.anchorRecord('LAB_REPORT', updated.id, 1, payload, req.user!.role as Role).catch(err => {
+      console.error('Failed to trigger async blockchain anchor for LR:', err)
+    })
+
+    await AuditService.recordStateChange({
+      action: 'LAB_REPORT_FINALIZED',
+      actorId: labId,
+      entityType: 'LabReport',
+      entityId: updated.id,
+      newState: { status: updated.status },
+      ipAddress: req.ip,
+      userAgent: req.headers['user-agent']
     })
 
     sendSuccess(res, 'Report finalized successfully.', { report: updated })

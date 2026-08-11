@@ -1,6 +1,8 @@
 import { Request, Response } from 'express'
 import { prisma } from '../lib/prisma'
 import { AuthenticatedRequest } from '../middleware/auth.middleware'
+import { sendSuccess, sendError } from '../lib/response'
+import { paginationSchema } from '../lib/validators'
 
 // ─── Helpers ─────────────────────────────────────────────
 
@@ -17,10 +19,13 @@ function getQueryString(param: unknown): string | undefined {
 
 // ─── Controllers ─────────────────────────────────────────
 
-export async function getAllUsers(req: Request, res: Response): Promise<void> {
+export async function getAllUsers(req: AuthenticatedRequest, res: Response): Promise<void> {
   try {
-    const page = parseInt(getQueryString(req.query.page) || '1')
-    const limit = parseInt(getQueryString(req.query.limit) || '10')
+    if (req.user!.role !== 'ADMIN') {
+      sendError(res, 'Only admins can perform this action.', 403)
+      return
+    }
+    const { page, limit } = paginationSchema.parse(req.query)
     const role = getQueryString(req.query.role)
     const skip = (page - 1) * limit
 
@@ -50,8 +55,8 @@ export async function getAllUsers(req: Request, res: Response): Promise<void> {
       prisma.user.count({ where }),
     ])
 
-    res.json({
-      users,
+    sendSuccess(res, 'Users retrieved successfully', {
+      items: users,
       pagination: {
         page,
         limit,
@@ -61,15 +66,19 @@ export async function getAllUsers(req: Request, res: Response): Promise<void> {
     })
   } catch (error) {
     console.error('Get users error:', error)
-    res.status(500).json({ error: 'Internal server error' })
+    sendError(res, 'Internal server error', 500)
   }
 }
 
-export async function getUserById(req: Request, res: Response): Promise<void> {
+export async function getUserById(req: AuthenticatedRequest, res: Response): Promise<void> {
   try {
+    if (req.user!.role !== 'ADMIN' && req.user!.id !== req.params.id) {
+      sendError(res, 'Forbidden.', 403)
+      return
+    }
     const id = getParamString(req.params.id)
     if (!id) {
-      res.status(400).json({ error: 'User ID is required.' })
+      sendError(res, 'User ID is required.', 400)
       return
     }
 
@@ -102,14 +111,14 @@ export async function getUserById(req: Request, res: Response): Promise<void> {
     })
 
     if (!user) {
-      res.status(404).json({ error: 'User not found.' })
+      sendError(res, 'User not found.', 404)
       return
     }
 
-    res.json({ user })
+    sendSuccess(res, 'User retrieved successfully', { user })
   } catch (error) {
     console.error('Get user error:', error)
-    res.status(500).json({ error: 'Internal server error' })
+    sendError(res, 'Internal server error', 500)
   }
 }
 
@@ -117,19 +126,19 @@ export async function toggleUserStatus(req: AuthenticatedRequest, res: Response)
   try {
     const id = getParamString(req.params.id)
     if (!id) {
-      res.status(400).json({ error: 'User ID is required.' })
+      sendError(res, 'User ID is required.', 400)
       return
     }
 
     // Only admins can toggle user status
-    if (req.userRole !== 'ADMIN') {
-      res.status(403).json({ error: 'Only admins can perform this action.' })
+    if (req.user!.role !== 'ADMIN') {
+      sendError(res, 'Only admins can perform this action.', 403)
       return
     }
 
     const user = await prisma.user.findUnique({ where: { id } })
     if (!user) {
-      res.status(404).json({ error: 'User not found.' })
+      sendError(res, 'User not found.', 404)
       return
     }
 
@@ -145,12 +154,11 @@ export async function toggleUserStatus(req: AuthenticatedRequest, res: Response)
       },
     })
 
-    res.json({
-      message: `User ${updatedUser.isActive ? 'activated' : 'deactivated'} successfully`,
+    sendSuccess(res, `User ${updatedUser.isActive ? 'activated' : 'deactivated'} successfully`, {
       user: updatedUser,
     })
   } catch (error) {
     console.error('Toggle user status error:', error)
-    res.status(500).json({ error: 'Internal server error' })
+    sendError(res, 'Internal server error', 500)
   }
 }

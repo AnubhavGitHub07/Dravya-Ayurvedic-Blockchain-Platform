@@ -5,6 +5,7 @@ import { prisma } from '../lib/prisma'
 import { sendSuccess, sendError } from '../lib/response'
 import { registerSchema, loginSchema, publicRegistrationRoles } from '../lib/validators'
 import { AuthenticatedRequest } from '../middleware/auth.middleware'
+import { AuditService } from '../services/audit.service'
 
 // ─── Helpers ─────────────────────────────────────────────
 
@@ -48,11 +49,7 @@ export async function register(req: Request, res: Response): Promise<void> {
     // Validate input
     const validation = registerSchema.safeParse(req.body)
     if (!validation.success) {
-      res.status(400).json({
-        success: false,
-        message: 'Validation failed.',
-        errors: validation.error.flatten().fieldErrors,
-      })
+      sendError(res, 'Validation failed.', 400, validation.error.flatten().fieldErrors)
       return
     }
 
@@ -97,6 +94,16 @@ export async function register(req: Request, res: Response): Promise<void> {
 
     const token = generateToken(user.id, user.role)
 
+    await AuditService.recordSecurityEvent({
+      action: 'USER_REGISTERED',
+      actorId: user.id,
+      entityType: 'User',
+      entityId: user.id,
+      newState: { role: user.role, email: user.email },
+      ipAddress: req.ip,
+      userAgent: req.headers['user-agent'],
+    })
+
     sendSuccess(res, 'User registered successfully.', { user, token }, 201)
   } catch (error) {
     console.error('Register error:', error)
@@ -115,11 +122,7 @@ export async function login(req: Request, res: Response): Promise<void> {
     // Validate input
     const validation = loginSchema.safeParse(req.body)
     if (!validation.success) {
-      res.status(400).json({
-        success: false,
-        message: 'Validation failed.',
-        errors: validation.error.flatten().fieldErrors,
-      })
+      sendError(res, 'Validation failed.', 400, validation.error.flatten().fieldErrors)
       return
     }
 
@@ -128,12 +131,25 @@ export async function login(req: Request, res: Response): Promise<void> {
     // Find user (need password for comparison)
     const user = await prisma.user.findUnique({ where: { email } })
     if (!user) {
+      await AuditService.recordSecurityEvent({
+        action: 'USER_LOGIN_FAILED',
+        metadata: { reason: 'Invalid email', emailAttempt: email },
+        ipAddress: req.ip,
+        userAgent: req.headers['user-agent'],
+      })
       sendError(res, 'Invalid email or password.', 401)
       return
     }
 
     // Check if account is active
     if (!user.isActive) {
+      await AuditService.recordSecurityEvent({
+        action: 'USER_LOGIN_FAILED',
+        actorId: user.id,
+        metadata: { reason: 'Account inactive' },
+        ipAddress: req.ip,
+        userAgent: req.headers['user-agent'],
+      })
       sendError(res, 'Account has been deactivated. Please contact an administrator.', 403)
       return
     }
@@ -141,6 +157,13 @@ export async function login(req: Request, res: Response): Promise<void> {
     // Verify password
     const isValidPassword = await bcrypt.compare(password, user.password)
     if (!isValidPassword) {
+      await AuditService.recordSecurityEvent({
+        action: 'USER_LOGIN_FAILED',
+        actorId: user.id,
+        metadata: { reason: 'Invalid password' },
+        ipAddress: req.ip,
+        userAgent: req.headers['user-agent'],
+      })
       sendError(res, 'Invalid email or password.', 401)
       return
     }
@@ -158,6 +181,13 @@ export async function login(req: Request, res: Response): Promise<void> {
         isActive: user.isActive,
       },
       token,
+    })
+
+    await AuditService.recordSecurityEvent({
+      action: 'USER_LOGIN',
+      actorId: user.id,
+      ipAddress: req.ip,
+      userAgent: req.headers['user-agent'],
     })
   } catch (error) {
     console.error('Login error:', error)

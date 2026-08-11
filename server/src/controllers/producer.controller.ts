@@ -3,6 +3,7 @@ import { prisma } from '../lib/prisma'
 import { sendSuccess, sendError } from '../lib/response'
 import { producerProfileSchema } from '../lib/validators'
 import { AuthenticatedRequest } from '../middleware/auth.middleware'
+import { AuditService } from '../services/audit.service'
 
 // ─── Helpers ─────────────────────────────────────────────
 
@@ -53,15 +54,13 @@ export async function updateMyProfile(req: AuthenticatedRequest, res: Response):
 
     const validation = producerProfileSchema.safeParse(req.body)
     if (!validation.success) {
-      res.status(400).json({
-        success: false,
-        message: 'Validation failed.',
-        errors: validation.error.flatten().fieldErrors,
-      })
+      sendError(res, 'Validation failed.', 400, validation.error.flatten().fieldErrors)
       return
     }
 
     const profileData = validation.data
+
+    const existingProfile = await prisma.producerProfile.findUnique({ where: { userId } })
 
     const profile = await prisma.producerProfile.upsert({
       where: { userId },
@@ -71,6 +70,17 @@ export async function updateMyProfile(req: AuthenticatedRequest, res: Response):
         userId,
       },
       select: safeProfileSelect,
+    })
+
+    await AuditService.recordStateChange({
+      action: existingProfile ? 'PRODUCER_PROFILE_UPDATED' : 'PRODUCER_PROFILE_CREATED',
+      actorId: userId,
+      entityType: 'ProducerProfile',
+      entityId: profile.id,
+      previousState: existingProfile || null,
+      newState: profile,
+      ipAddress: req.ip,
+      userAgent: req.headers['user-agent'],
     })
 
     sendSuccess(res, 'Producer profile updated successfully.', { profile })

@@ -63,7 +63,7 @@ export function LoginForm() {
         {/* Decorative background blur */}
         <div className="absolute -inset-1 bg-gradient-to-r from-[#184E48]/20 to-primary/20 rounded-[32px] blur-xl opacity-50 group-hover:opacity-70 transition duration-1000 group-hover:duration-300"></div>
         
-        <Card className="relative bg-white/90 backdrop-blur-xl border border-slate-100 shadow-[0_8px_40px_rgb(0,0,0,0.06)] rounded-[28px] overflow-hidden">
+        <Card className="relative bg-white/90 backdrop-blur-xl border border-[#184E48] shadow-[0_8px_40px_rgb(0,0,0,0.06)] rounded-[28px] overflow-hidden">
           
           <CardHeader className="pt-8 pb-4 flex flex-col items-center text-center">
             <CardTitle className="text-2xl font-bold text-slate-900 tracking-tight">

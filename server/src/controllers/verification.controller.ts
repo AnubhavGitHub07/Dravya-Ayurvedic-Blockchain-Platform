@@ -3,7 +3,11 @@ import { prisma } from '../lib/prisma'
 import { sendSuccess, sendError } from '../lib/response'
 import { AuthenticatedRequest } from '../middleware/auth.middleware'
 import { approveVerificationSchema, rejectVerificationSchema } from '../lib/validators'
-
+import { BlockchainService } from '../services/blockchain.service'
+import { HashingService } from '../services/hashing.service'
+import { NotificationService } from '../services/notification.service'
+import { AuditService } from '../services/audit.service'
+import { Role } from '@prisma/client'
 // ─── PRODUCER ROUTES ─────────────────────────────────────
 
 export async function requestVerification(req: AuthenticatedRequest, res: Response): Promise<void> {
@@ -47,6 +51,26 @@ export async function requestVerification(req: AuthenticatedRequest, res: Respon
       })
 
       return reqRecord
+    })
+
+    NotificationService.createNotification({
+      userId: profile.userId,
+      type: 'PRODUCER_VERIFICATION_SUBMITTED',
+      title: 'Verification Request Submitted',
+      message: 'Your producer verification request has been submitted successfully.',
+      entityType: 'PRODUCER_VERIFICATION',
+      entityId: verification.id,
+      eventKey: `PRODUCER_VERIFICATION_SUBMITTED:${verification.id}`
+    })
+
+    await AuditService.recordStateChange({
+      action: 'VERIFICATION_REQUESTED',
+      actorId: userId,
+      entityType: 'ProducerVerification',
+      entityId: verification.id,
+      newState: { status: verification.status },
+      ipAddress: req.ip,
+      userAgent: req.headers['user-agent']
     })
 
     sendSuccess(res, 'Verification requested successfully.', { verification }, 201)
@@ -146,16 +170,13 @@ export async function approveVerification(req: AuthenticatedRequest, res: Respon
 
     const validation = approveVerificationSchema.safeParse(req.body)
     if (!validation.success) {
-      res.status(400).json({
-        success: false,
-        message: 'Validation failed.',
-        errors: validation.error.flatten().fieldErrors,
-      })
+      sendError(res, 'Validation failed.', 400, validation.error.flatten().fieldErrors)
       return
     }
 
     const verification = await prisma.producerVerification.findUnique({
-      where: { id }
+      where: { id },
+      include: { producerProfile: { select: { userId: true } } }
     })
 
     if (!verification) {
@@ -195,6 +216,33 @@ export async function approveVerification(req: AuthenticatedRequest, res: Respon
       return updatedVer
     })
 
+    // STEP 6: Automatic Blockchain Anchoring
+    const payload = HashingService.getProducerVerificationPayload(result)
+    BlockchainService.anchorRecord('PRODUCER_VERIFICATION', result.id, 1, payload, req.user!.role as Role).catch(err => {
+      console.error('Failed to trigger async blockchain anchor for PV:', err)
+    })
+
+    NotificationService.createNotification({
+      userId: verification.producerProfile.userId,
+      type: 'PRODUCER_VERIFICATION_APPROVED',
+      title: 'Producer Verification Approved',
+      message: 'Your producer verification has been approved.',
+      entityType: 'PRODUCER_VERIFICATION',
+      entityId: result.id,
+      eventKey: `PRODUCER_VERIFICATION_APPROVED:${result.id}`,
+      priority: 'NORMAL'
+    })
+
+    await AuditService.recordStateChange({
+      action: 'VERIFICATION_APPROVED',
+      actorId: authorityId,
+      entityType: 'ProducerVerification',
+      entityId: result.id,
+      newState: { status: result.status, decision: result.decision },
+      ipAddress: req.ip,
+      userAgent: req.headers['user-agent']
+    })
+
     sendSuccess(res, 'Producer verification approved successfully.', { verification: result })
   } catch (error) {
     console.error('Approve verification error:', error)
@@ -209,16 +257,13 @@ export async function rejectVerification(req: AuthenticatedRequest, res: Respons
 
     const validation = rejectVerificationSchema.safeParse(req.body)
     if (!validation.success) {
-      res.status(400).json({
-        success: false,
-        message: 'Validation failed.',
-        errors: validation.error.flatten().fieldErrors,
-      })
+      sendError(res, 'Validation failed.', 400, validation.error.flatten().fieldErrors)
       return
     }
 
     const verification = await prisma.producerVerification.findUnique({
-      where: { id }
+      where: { id },
+      include: { producerProfile: { select: { userId: true } } }
     })
 
     if (!verification) {
@@ -254,6 +299,33 @@ export async function rejectVerification(req: AuthenticatedRequest, res: Respons
       })
 
       return updatedVer
+    })
+
+    // STEP 6: Automatic Blockchain Anchoring
+    const payload = HashingService.getProducerVerificationPayload(result)
+    BlockchainService.anchorRecord('PRODUCER_VERIFICATION', result.id, 1, payload, req.user!.role as Role).catch(err => {
+      console.error('Failed to trigger async blockchain anchor for PV:', err)
+    })
+
+    NotificationService.createNotification({
+      userId: verification.producerProfile.userId,
+      type: 'PRODUCER_VERIFICATION_REJECTED',
+      title: 'Producer Verification Rejected',
+      message: 'Your producer verification requires attention.',
+      entityType: 'PRODUCER_VERIFICATION',
+      entityId: result.id,
+      eventKey: `PRODUCER_VERIFICATION_REJECTED:${result.id}`,
+      priority: 'HIGH'
+    })
+
+    await AuditService.recordStateChange({
+      action: 'VERIFICATION_REJECTED',
+      actorId: authorityId,
+      entityType: 'ProducerVerification',
+      entityId: result.id,
+      newState: { status: result.status, decision: result.decision, reason: result.rejectionReason },
+      ipAddress: req.ip,
+      userAgent: req.headers['user-agent']
     })
 
     sendSuccess(res, 'Producer verification rejected.', { verification: result })

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { prisma } from '../lib/prisma'
 import { sendSuccess, sendError } from '../lib/response'
-import { createBatchSchema, updateBatchSchema } from '../lib/validators'
+import { createBatchSchema, updateBatchSchema, paginationSchema } from '../lib/validators'
 import { AuthenticatedRequest } from '../middleware/auth.middleware'
 
 // ─── Helpers ─────────────────────────────────────────────
@@ -89,11 +89,7 @@ export async function createBatch(req: AuthenticatedRequest, res: Response): Pro
 
     const validation = createBatchSchema.safeParse(req.body)
     if (!validation.success) {
-      res.status(400).json({
-        success: false,
-        message: 'Validation failed.',
-        errors: validation.error.flatten().fieldErrors,
-      })
+      sendError(res, 'Validation failed.', 400, validation.error.flatten().fieldErrors)
       return
     }
 
@@ -139,8 +135,7 @@ export async function createBatch(req: AuthenticatedRequest, res: Response): Pro
 
 export async function getAllBatches(req: AuthenticatedRequest, res: Response): Promise<void> {
   try {
-    const page = parseInt(getQueryString(req.query.page) || '1')
-    const limit = parseInt(getQueryString(req.query.limit) || '10')
+    const { page, limit } = paginationSchema.parse(req.query)
     const status = getQueryString(req.query.status)
     const skip = (page - 1) * limit
     
@@ -247,11 +242,7 @@ export async function updateBatch(req: AuthenticatedRequest, res: Response): Pro
 
     const validation = updateBatchSchema.safeParse(req.body)
     if (!validation.success) {
-      res.status(400).json({
-        success: false,
-        message: 'Validation failed.',
-        errors: validation.error.flatten().fieldErrors,
-      })
+      sendError(res, 'Validation failed.', 400, validation.error.flatten().fieldErrors)
       return
     }
 
@@ -345,6 +336,66 @@ export async function submitBatch(req: AuthenticatedRequest, res: Response): Pro
     sendSuccess(res, 'Batch submitted successfully. It is now pending verification.', { batch })
   } catch (error) {
     console.error('Submit batch error:', error)
+    sendError(res, 'Internal server error.', 500)
+  }
+}
+
+export async function getBatchSupplyChain(req: AuthenticatedRequest, res: Response): Promise<void> {
+  try {
+    const id = getParamString(req.params.id)
+    if (!id) {
+      sendError(res, 'Batch ID is required.', 400)
+      return
+    }
+
+    const userId = req.user!.id
+    const userRole = req.user!.role
+
+    const batch = await prisma.batch.findUnique({
+      where: { id },
+      include: { 
+        supplyChainEvents: { orderBy: { timestamp: 'asc' } },
+        producerProfile: true,
+        distributorAssignments: true
+      },
+    })
+
+    if (!batch) {
+      sendError(res, 'Batch not found.', 404)
+      return
+    }
+
+    // Ownership checks
+    if (userRole === 'PRODUCER') {
+      if (batch.producerProfile.userId !== userId) {
+        sendError(res, 'Forbidden. You do not have permission to view this batch.', 403)
+        return
+      }
+    } else if (userRole === 'DISTRIBUTOR') {
+      const isAssigned = batch.distributorAssignments.some(a => a.distributorId === userId)
+      if (!isAssigned) {
+        sendError(res, 'Forbidden. You do not have permission to view this batch.', 403)
+        return
+      }
+    }
+    // Admin, Lab, Verification Authority can view any batch
+
+    const timeline = batch.supplyChainEvents.map((event) => ({
+      type: event.action,
+      timestamp: event.timestamp,
+      quantity: event.quantity,
+      unit: event.unit,
+      location: event.location,
+      status: 'COMPLETED'
+    }))
+
+    sendSuccess(res, 'Supply chain timeline retrieved successfully.', {
+      batchNumber: batch.batchNumber,
+      currentStatus: batch.status,
+      events: timeline
+    })
+  } catch (error) {
+    console.error('Get supply chain error:', error)
     sendError(res, 'Internal server error.', 500)
   }
 }

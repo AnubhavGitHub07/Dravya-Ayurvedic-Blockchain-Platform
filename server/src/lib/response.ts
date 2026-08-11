@@ -11,6 +11,7 @@ interface SuccessResponse {
 interface ErrorResponse {
   success: false
   message: string
+  errors?: any
 }
 
 export function sendSuccess(
@@ -29,8 +30,12 @@ export function sendSuccess(
 export function sendError(
   res: Response,
   message: string,
-  statusCode: number = 400
+  statusCode: number = 400,
+  errors?: any
 ): void {
   const response: ErrorResponse = { success: false, message }
+  if (errors) {
+    response.errors = errors
+  }
   res.status(statusCode).json(response)
 }
