@@ -47,6 +47,9 @@ models/*.tmp
 # Scratch & Temporary Files
 scratch/
 
+# Scratch & Temporary Files
+scratch/
+
 # Generated Operational Reports & Logs
 reports/generated/
 *.log
