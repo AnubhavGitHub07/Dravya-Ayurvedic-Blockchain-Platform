@@ -1,8 +1,0 @@
-{
-  "model_version": "v1-kaggle-gpu",
-  "total_test_samples": 2256,
-  "correct_test_predictions": 2226,
-  "test_accuracy": 0.9867021276595744,
-  "best_val_accuracy": 0.9933451641526175,
-  "status": "PASS"
-}

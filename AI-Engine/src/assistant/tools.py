@@ -1,12 +1,10 @@
 """
 Deterministic Assistant Tools layer binding BatchManager and BatchService data methods.
-Integrates live inventory records, blockchain traceability payloads, and grounded project knowledge.
 """
-import logging
 from typing import Any, Dict, List, Optional, Union
+import logging
 
 from src.assistant.exceptions import InvalidToolArgumentError, ToolExecutionError
-from src.assistant.knowledge import KnowledgeRetriever
 from src.batch import (
     BatchManager,
     BatchNotFoundError,
@@ -30,11 +28,9 @@ class AssistantTools:
         self,
         batch_manager: Optional[BatchManager] = None,
         batch_service: Optional[BatchService] = None,
-        knowledge_retriever: Optional[KnowledgeRetriever] = None,
     ):
         self.batch_manager = batch_manager or BatchManager()
         self.batch_service = batch_service or BatchService(batch_manager=self.batch_manager)
-        self.knowledge_retriever = knowledge_retriever or KnowledgeRetriever()
 
     def get_herb_batches(self, herb_name: str) -> Dict[str, Any]:
         """
@@ -133,31 +129,6 @@ class AssistantTools:
                 "error": f"Batch '{clean_batch_id}' not found.",
             }
 
-    def get_batch_full_details(self, batch_id: str) -> Dict[str, Any]:
-        """
-        Aggregates batch details and blockchain traceability payload into a unified response.
-        """
-        batch_info = self.get_batch(batch_id)
-        if batch_info.get("found") is False:
-            return batch_info
-        traceability_info = self.get_batch_traceability(batch_id)
-        return {
-            "batch": batch_info,
-            "traceability": traceability_info,
-        }
-
-    def get_project_knowledge(self, topic: str, query: Optional[str] = None) -> Dict[str, Any]:
-        """
-        Retrieves grounded project documentation snippet.
-        """
-        if not topic or not isinstance(topic, str):
-            raise InvalidToolArgumentError("topic must be a non-empty string.")
-        content = self.knowledge_retriever.get_answer(topic)
-        return {
-            "topic": topic,
-            "content": content,
-        }
-
     def execute_tool(self, tool_name: str, kwargs: Dict[str, Any]) -> Dict[str, Any]:
         """
         Central dispatch for executing tool functions safely by name.
@@ -170,8 +141,6 @@ class AssistantTools:
             "get_inventory_summary": self.get_inventory_summary,
             "get_batch": self.get_batch,
             "get_batch_traceability": self.get_batch_traceability,
-            "get_batch_full_details": self.get_batch_full_details,
-            "get_project_knowledge": self.get_project_knowledge,
         }
 
         if tool_name not in allowlist:
@@ -303,23 +272,6 @@ def get_tool_definitions() -> List[Dict[str, Any]]:
                         }
                     },
                     "required": ["batch_id"],
-                },
-            },
-        },
-        {
-            "type": "function",
-            "function": {
-                "name": "get_project_knowledge",
-                "description": "Retrieve authoritative documentation regarding Dravya platform architecture, AI Engine, blockchain, workflow, or features.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "topic": {
-                            "type": "string",
-                            "description": "Knowledge topic key (e.g. project_overview, ai_engine, blockchain, workflow, features, technology_stack).",
-                        }
-                    },
-                    "required": ["topic"],
                 },
             },
         },

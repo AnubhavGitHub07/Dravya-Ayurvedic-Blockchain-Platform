@@ -51,15 +51,8 @@ def create_app() -> FastAPI:
         "http://localhost:5173",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:5173",
-        "https://dravya-ayurvedic-blockchain-platfor-nine.vercel.app",
     ]
-    raw_configured = api_cfg.get("cors_allowed_origins", default_origins)
-    if isinstance(raw_configured, str):
-        configured_origins = [o.strip().rstrip("/") for o in raw_configured.split(",") if o.strip()]
-    elif isinstance(raw_configured, (list, tuple, set)):
-        configured_origins = [str(o).strip().rstrip("/") for o in raw_configured if str(o).strip()]
-    else:
-        configured_origins = list(default_origins)
+    configured_origins = list(api_cfg.get("cors_allowed_origins", default_origins))
 
     # Collect additional origins from environment variables
     env_frontend = os.getenv("DRAVYA_FRONTEND_ORIGIN")
@@ -75,16 +68,11 @@ def create_app() -> FastAPI:
         if origin not in configured_origins:
             configured_origins.append(origin)
 
-    # Ensure default production origin is always present
-    prod_frontend_origin = "https://dravya-ayurvedic-blockchain-platfor-nine.vercel.app"
-    if prod_frontend_origin not in configured_origins:
-        configured_origins.append(prod_frontend_origin)
-
     app.add_middleware(
         CORSMiddleware,
         allow_origins=configured_origins,
         allow_credentials=True,
-        allow_methods=["*"],
+        allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         allow_headers=["*"],
     )
 

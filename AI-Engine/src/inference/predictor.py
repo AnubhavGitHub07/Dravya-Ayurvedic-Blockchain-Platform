@@ -1,19 +1,15 @@
 import io
 import json
-import logging
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Union
 from PIL import Image
 
 import torch
 
-from src.data.paths import get_project_root, get_reports_dir
 from src.models.config import load_model_config
 from src.models.plant_classifier import PlantClassifier
 from src.models.version_manager import ModelVersionManager
 from src.training.dataset import get_transforms
-
-logger = logging.getLogger("dravya.inference.predictor")
 
 
 class PlantPredictor:
@@ -60,60 +56,30 @@ class PlantPredictor:
 
         # 1b. Load species taxonomy metadata mapping
         self.taxonomy_map: Dict[str, Dict[str, Any]] = {}
-
-        # Source A: Model version directory taxonomy_mapping.json
         tax_path = self.version_dir / "taxonomy_mapping.json"
         if tax_path.exists():
             try:
                 with open(tax_path, "r", encoding="utf-8") as f:
                     self.taxonomy_map = json.load(f)
-                logger.info(f"Loaded {len(self.taxonomy_map)} taxonomy mappings from version artifact '{tax_path.name}'")
-            except Exception as e:
-                logger.warning(f"Failed to read taxonomy_mapping.json at {tax_path}: {e}")
+            except Exception:
+                pass
 
-        # Source B: Authoritative dataset analysis reports fallback
         if not self.taxonomy_map:
-            for report_filename in [
-                "training_taxonomy_review_v2.json",
-                "canonical_dataset_v1.json",
-                "candidate_training_classes_v2.json",
-            ]:
-                report_path = get_reports_dir() / report_filename
-                if not report_path.exists():
-                    report_path = get_project_root() / "reports" / "dataset_analysis" / report_filename
-
-                if report_path.exists():
-                    try:
-                        with open(report_path, "r", encoding="utf-8") as f:
-                            report_data = json.load(f)
-
-                        # Parse items from breakdown / candidate_classes / reviews
-                        items = (
-                            report_data.get("candidate_classes")
-                            or report_data.get("per_class_breakdown")
-                            or report_data.get("reviews")
-                            or (report_data if isinstance(report_data, list) else [])
-                        )
-                        for item in items:
+            cand_path = Path(__file__).resolve().parent.parent.parent / "reports" / "dataset_analysis" / "candidate_training_classes_v2.json"
+            if cand_path.exists():
+                try:
+                    with open(cand_path, "r", encoding="utf-8") as f:
+                        cand_data = json.load(f)
+                        for item in cand_data.get("candidate_classes", []):
                             cid = item.get("class_id")
                             if cid:
                                 self.taxonomy_map[cid] = {
                                     "class_id": cid,
                                     "species_name": item.get("canonical_species_name"),
-                                    "canonical_name": item.get("canonical_species_name"),
                                     "scientific_name": item.get("scientific_name"),
                                 }
-                        if self.taxonomy_map:
-                            logger.info(f"Loaded {len(self.taxonomy_map)} taxonomy mappings from report '{report_filename}'")
-                            break
-                    except Exception as e:
-                        logger.warning(f"Could not load fallback taxonomy from {report_path}: {e}")
-
-        if self.taxonomy_map:
-            logger.info(f"Taxonomy metadata active: {len(self.taxonomy_map)} species mappings available.")
-        else:
-            logger.warning(f"No taxonomy mappings resolved for model version '{self.version}'. Predictions will output raw class IDs.")
-
+                except Exception:
+                    pass
 
         # 2. Load model metadata & config
         meta_path = self.version_dir / "model_metadata.json"

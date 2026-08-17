@@ -8,8 +8,6 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: "3.12"
-      - key: DRAVYA_ACTIVE_MODEL_VERSION
-        value: "v1-kaggle"
       - key: DRAVYA_FRONTEND_ORIGIN
         sync: false
       - key: DRAVYA_LLM_PROVIDER

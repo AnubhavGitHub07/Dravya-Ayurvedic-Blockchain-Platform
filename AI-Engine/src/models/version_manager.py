@@ -17,17 +17,12 @@ class ModelVersionManager:
 
     def __init__(self, models_dir: Optional[Union[str, Path]] = None):
         if models_dir:
-            p = Path(models_dir)
-            if not p.is_absolute():
-                self.models_dir = (get_project_root() / p).resolve()
-            else:
-                self.models_dir = p.resolve()
+            self.models_dir = Path(models_dir)
         else:
             self.models_dir = get_models_dir().resolve()
 
         self.models_dir.mkdir(parents=True, exist_ok=True)
         self.active_pointer_file = self.models_dir / "active_model.json"
-
 
     def get_version_dir(self, version: str) -> Path:
         return self.models_dir / version
@@ -134,30 +129,20 @@ class ModelVersionManager:
         pointer_data = {
             "active_version": version,
             "promoted_at": datetime.now(timezone.utc).isoformat(),
-            "models_dir": "models",
+            "models_dir": str(self.models_dir),
         }
         atomic_json_write(self.active_pointer_file, pointer_data)
         return version
 
     def get_active_version(self) -> Optional[str]:
-        # 1. Environment variable override
-        env_ver = os.getenv("DRAVYA_ACTIVE_MODEL_VERSION") or os.getenv("DRAVYA_MODEL_VERSION")
-        if env_ver and env_ver.strip():
-            return env_ver.strip()
-
-        # 2. active_model.json pointer file
         if self.active_pointer_file.exists():
             try:
                 with open(self.active_pointer_file, "r", encoding="utf-8") as f:
                     data = json.load(f)
-                    val = data.get("active_version")
-                    if val and str(val).strip():
-                        return str(val).strip()
+                    return data.get("active_version")
             except Exception:
                 pass
-
         return None
-
 
     def rollback(self, target_version: str) -> str:
         """

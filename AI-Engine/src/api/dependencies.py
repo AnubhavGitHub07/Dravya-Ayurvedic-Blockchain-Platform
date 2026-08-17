@@ -1,16 +1,10 @@
-import os
-import logging
-import urllib.request
 from pathlib import Path
 from typing import Dict, Any, Optional, Tuple, Union
 from fastapi import HTTPException, status
 
-from src.data.paths import load_config, get_project_root, get_models_dir
+from src.data.paths import load_config, get_project_root
 from src.inference.predictor import PlantPredictor
 from src.models.version_manager import ModelVersionManager
-
-logger = logging.getLogger("dravya.api.dependencies")
-
 
 
 class PredictorDependencyManager:
@@ -37,44 +31,22 @@ class PredictorDependencyManager:
         vm = self.get_version_manager()
         return vm.get_active_version()
 
-    def _ensure_checkpoint_present(self, v_dir: Path, active_version: str) -> Optional[Path]:
-        """Check for local checkpoint file, or download from DRAVYA_MODEL_URL if configured."""
-        v_dir.mkdir(parents=True, exist_ok=True)
-        chk = v_dir / "best_model.pth"
-        if not chk.exists():
-            chk = v_dir / "latest_checkpoint.pth"
-
-        if chk.exists():
-            return chk
-
-        # Optional download from DRAVYA_MODEL_URL / MODEL_URL
-        model_url = os.getenv("DRAVYA_MODEL_URL") or os.getenv("MODEL_URL")
-        if model_url and model_url.startswith("http"):
-            target_chk = v_dir / "best_model.pth"
-            logger.info(f"Downloading model artifact from remote URL: {model_url} -> {target_chk}")
-            try:
-                urllib.request.urlretrieve(model_url, str(target_chk))
-                logger.info(f"Successfully downloaded model checkpoint ({target_chk.stat().st_size / (1024*1024):.2f} MB)")
-                return target_chk
-            except Exception as e:
-                logger.error(f"Failed to download model artifact from {model_url}: {e}")
-
-        return None
-
     def get_predictor(self, force_reload: bool = False) -> Optional[PlantPredictor]:
         active_version = self.get_active_version_id()
         if not active_version:
-            logger.warning("get_predictor: No active model version resolved.")
             return None
 
+        # Check if version directory & checkpoint exist
         vm = self.get_version_manager()
         v_dir = vm.get_version_dir(active_version)
 
-        chk = self._ensure_checkpoint_present(v_dir, active_version)
-        if not chk or not chk.exists():
-            logger.warning(
-                f"get_predictor: Checkpoint missing for version '{active_version}' in '{v_dir}'. Looked for best_model.pth / latest_checkpoint.pth."
-            )
+        if not v_dir.exists():
+            return None
+
+        chk = v_dir / "best_model.pth"
+        if not chk.exists():
+            chk = v_dir / "latest_checkpoint.pth"
+        if not chk.exists():
             return None
 
         # Cache hit check
@@ -87,7 +59,6 @@ class PredictorDependencyManager:
 
         # Load predictor instance
         try:
-            logger.info(f"Loading PlantPredictor: version='{active_version}', checkpoint='{chk.name}', models_dir='{vm.models_dir}'")
             predictor = PlantPredictor(
                 version=active_version,
                 checkpoint_name=chk.name,
@@ -96,10 +67,10 @@ class PredictorDependencyManager:
             )
             self._cached_predictor = predictor
             self._cached_version = active_version
-            logger.info(f"PlantPredictor successfully loaded and cached for version '{active_version}' (classes={predictor.num_classes}, device={predictor.device})")
             return predictor
         except Exception as e:
-            logger.exception(f"Failed to load PlantPredictor for version '{active_version}': {e}")
+            import logging
+            logging.exception(f"Failed to load PlantPredictor for version '{active_version}': {e}")
             return None
 
     def get_health_status(self) -> Tuple[str, Optional[str], bool]:
@@ -107,20 +78,14 @@ class PredictorDependencyManager:
         Lightweight health status check.
         Checks active model resolution and checkpoint availability without running inference.
         """
-        vm = self.get_version_manager()
-        active_version = vm.get_active_version()
-
+        active_version = self.get_active_version_id()
         if not active_version:
-            logger.warning(
-                f"[Model Health Check] Degraded: No active model version resolved in models_dir='{vm.models_dir}' (exists={vm.models_dir.exists()})"
-            )
             return "degraded", None, False
 
+        vm = self.get_version_manager()
         v_dir = vm.get_version_dir(active_version)
+
         if not v_dir.exists():
-            logger.warning(
-                f"[Model Health Check] Degraded: Version directory '{active_version}' not found at '{v_dir}'"
-            )
             return "degraded", active_version, False
 
         chk = v_dir / "best_model.pth"
@@ -128,20 +93,13 @@ class PredictorDependencyManager:
             chk = v_dir / "latest_checkpoint.pth"
 
         if not chk.exists():
-            logger.warning(
-                f"[Model Health Check] Degraded: Model checkpoint not found in '{v_dir}'. Checked best_model.pth and latest_checkpoint.pth."
-            )
             return "degraded", active_version, False
 
-        logger.info(
-            f"[Model Health Check] Healthy: Active version '{active_version}' verified at '{v_dir}' (checkpoint='{chk.name}', size={chk.stat().st_size / (1024*1024):.2f} MB)"
-        )
         return "healthy", active_version, True
 
     def clear_cache(self) -> None:
         self._cached_predictor = None
         self._cached_version = None
-
 
 
 # Global singleton manager instance

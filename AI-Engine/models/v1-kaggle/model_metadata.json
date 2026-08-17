@@ -1,8 +1,0 @@
-{
-  "version": "v1-kaggle-gpu",
-  "architecture": "efficientnet_b0",
-  "num_classes": 82,
-  "best_val_accuracy": 0.9933451641526175,
-  "epochs_trained": 10,
-  "device": "cuda"
-}

@@ -474,11 +474,11 @@ curl -X POST "http://127.0.0.1:8000/batches/create-from-image" \
 
 ---
 
-## 6. Dravya AI Copilot Chat API
+## 6. Dravya AI Assistant Chat API
 
 ### `POST /chat`
 
-- **Purpose**: Executes natural-language queries in English, Hindi, or Hinglish via grounded project knowledge retrieval and live data tool execution.
+- **Purpose**: Executes natural-language queries in English, Hindi, or Hinglish via LLM tool execution.
 - **HTTP Method**: `POST`
 - **URL Path**: `/chat`
 - **Request Headers**: `Content-Type: application/json`
@@ -486,58 +486,29 @@ curl -X POST "http://127.0.0.1:8000/batches/create-from-image" \
 #### Request Body
 ```json
 {
-  "message": "What is Dravya and how does it prevent adulteration?",
-  "conversation_id": "optional-session-id-for-context"
+  "message": "Ashwagandha ki total quantity kitni hai?",
+  "conversation_id": "session-102"
 }
 ```
 
-#### Response Schema (`ChatResponse`)
-| Field | Type | Description |
-| :--- | :--- | :--- |
-| `answer` | `string` | Natural language grounded answer in user's language (English, Hindi, or Hinglish). |
-| `intent` | `string` | Classified intent (e.g. `project_overview`, `ai_engine`, `blockchain`, `workflow`, `herb_summary`, `batch`, `batch_traceability`, `mixed_query`). |
-| `data` | `object` / `null` | Structured payload returned by backend tools (or `null` for knowledge queries). |
-| `tool_used` | `string` / `null` | Name of tool executed (e.g. `get_herb_summary`, `get_batch`, `get_batch_traceability`, or `null`). |
-
----
-
-## 7. SIH Demo Questions Reference
-
-The Dravya AI Copilot supports the following questions out-of-the-box for Smart India Hackathon (SIH) demonstrations, jury evaluations, and live walkthroughs:
-
-### A. Live Dravya Data Questions
-1. **Herb Quantity & Summary**: *"How much Ashwagandha do we have in inventory?"* / *"Ashwagandha ki total quantity kitni hai?"*
-2. **Herb Batches**: *"Show me all batches of Ashwagandha"* / *"Tulsi ke saare batches dikhao."*
-3. **Batch Lookup**: *"Show details of batch DRAVYA-ASH-20260810-346DA7"*
-4. **Targeted Field Inquiries**:
-   - *"Who is the farmer for this batch?"*
-   - *"Where is this batch located?"*
-   - *"What is the verification status?"*
-   - *"What is the moisture content?"*
-5. **Blockchain Traceability & Tamper Verification**: *"What is the traceability information and SHA-256 hash for batch DRAVYA-ASH-20260810-346DA7?"*
-6. **Farmer Stock Summary**: *"Give me summary for farmer F001"* / *"Farmer F001 ke paas kitna stock hai?"*
-7. **System Overview**: *"What is the platform-wide inventory summary?"*
-
-### B. Dravya Project Knowledge Questions
-1. **Platform Mission**: *"What is Dravya?"* / *"Dravya kya hai aur ye kya problem solve karta hai?"*
-2. **Problem Addressed**: *"What problem does Dravya solve in the Ayurvedic supply chain?"*
-3. **Role of AI**: *"What is the role of AI in Dravya?"*
-4. **AI Architecture**: *"Explain the AI Engine architecture and model specs."*
-5. **Herb Identification Flow**: *"How does herb identification work from leaf images?"*
-6. **Role of Blockchain**: *"What is the role of blockchain in Dravya?"*
-7. **Traceability Payload**: *"Explain the traceability payload and how tamper detection works."*
-8. **End-to-End Workflow**: *"Explain the complete 5-phase workflow from farmer to consumer."*
-9. **Technology Stack**: *"What technologies, frameworks, and libraries are used in Dravya?"*
-10. **Model Lifecycle & Versioning**: *"How does model versioning, quality evaluation, and rollback work?"*
-
-### C. Multi-Intent & Mixed Queries
-1. *"Dravya kya hai aur AI herb ko identify kaise karta hai?"* (Project Overview + AI Engine)
-2. *"Ashwagandha ke kitne batches hain aur unki traceability kaise maintain hoti hai?"* (Live Herb Stock + Blockchain Traceability Explanation)
-3. *"Is batch ka farmer, quantity, verification status aur complete traceability batao."* (Multi-field lookup + Blockchain payload aggregation)
-
-### D. Multi-Turn Anaphora Context Resolution
-- **Turn 1**: *"Tell me about Ashwagandha inventory."*
-- **Turn 2**: *"How many batches does it have?"* (Resolves "it" $\rightarrow$ *Ashwagandha*)
-- **Turn 3**: *"Show the first batch."*
-- **Turn 4**: *"Who is the farmer?"* (Resolves to current active batch)
-- **Turn 5**: *"What is its verification status?"* (Resolves to current active batch)
+#### Example Response (`200 OK`)
+```json
+{
+  "answer": "Dravya system me Ashwagandha ki total recorded quantity 1850.50 kg hai. Isme total 12 batches aur 5 farmers registered hain.",
+  "intent": "herb_summary",
+  "data": {
+    "herb": "Ashwagandha",
+    "canonical_species": "Ashwagandha",
+    "total_batches": 12,
+    "total_quantity": 1850.5,
+    "quantity_unit": "kg",
+    "farmers_count": 5,
+    "farmers": ["F001", "F002", "F005", "F009", "F012"],
+    "verification_breakdown": {
+      "AI_CONFIRMED": 10,
+      "REVIEW_REQUIRED": 2
+    }
+  },
+  "tool_used": "get_herb_summary"
+}
+```

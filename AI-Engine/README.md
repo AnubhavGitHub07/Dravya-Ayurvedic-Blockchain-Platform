@@ -47,12 +47,10 @@ Auto-Passed to Blockchain       Government Botanist Verification Queue
 
 - <span style="color:green">**[IMPLEMENTED]**</span> **Production FastAPI Server:** Multi-format validation, 10MB size limit, Pillow decode verification, and thread-safe singleton model injection (`src/api/app.py`).
 - <span style="color:green">**[IMPLEMENTED]**</span> **Active Deep Learning Classifier (`v1-kaggle`):** EfficientNet-B0 architecture with 5.3M parameters, 16.75 MB weight size, and 98.67% verified test accuracy.
-- <span style="color:green">**[IMPLEMENTED]**</span> **Dravya AI Copilot (`POST /chat`):** Production SIH demo assistant answering live inventory records, batches, farmer summaries, blockchain traceability hashes, and grounded platform architecture queries.
-- <span style="color:green">**[IMPLEMENTED]**</span> **Deterministic Batch & Traceability Manager:** Collision-resistant Batch IDs, quantity normalization, and SHA-256 blockchain payload digests (`src/batch/`).
 - <span style="color:green">**[IMPLEMENTED]**</span> **SHA-256 Duplicate Audit Engine:** Scans multi-source datasets in read-only mode to prevent train/test data leakage (`src/data/duplicate_audit_v3.py`).
 - <span style="color:green">**[IMPLEMENTED]**</span> **Human-in-the-Loop Botanical Review:** CLI queue engine with persistent session state and append-only audit logging (`src/data/taxonomy_review_queue.py`).
 - <span style="color:green">**[IMPLEMENTED]**</span> **Model Promotion & Quality Gate:** Automatic version pointer (`models/active_model.json`) with rollback capabilities (`src/evaluation/model_promotion.py`).
-- <span style="color:green">**[IMPLEMENTED]**</span> **Automated PyTest Suite:** 300 unit and integration tests covering data pipelines, models, inference, assistant copilot, and API endpoints (`tests/`).
+- <span style="color:green">**[IMPLEMENTED]**</span> **Automated PyTest Suite:** 159 unit and integration tests covering data pipelines, models, inference, and API endpoints (`tests/`).
 - <span style="color:orange">**[PLANNED]**</span> **Out-of-Distribution (OOD) Hard Thresholding:** Rejecting non-plant images via confidence cutoffs ($\tau = 0.65$).
 - <span style="color:orange">**[PLANNED]**</span> **Grad-CAM Visual Explainability:** Heatmap overlays showing leaf vein feature activations.
 

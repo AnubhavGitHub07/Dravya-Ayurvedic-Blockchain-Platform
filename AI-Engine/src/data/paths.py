@@ -42,26 +42,20 @@ def get_external_dataset_root() -> Path:
         "EXTERNAL_DATASET_ROOT_PATH"
     )
     if env_path:
-        p = Path(env_path)
-        if not p.is_absolute():
-            return (PROJECT_ROOT / p).resolve()
-        return p.resolve()
+        return Path(env_path)
 
     config_raw = _CONFIG.get("paths", {}).get("raw_datasets", "datasets/raw")
     config_path = Path(config_raw)
     if not config_path.is_absolute():
         return (PROJECT_ROOT / config_path).resolve()
-    return config_path.resolve()
+    return config_path
 
 
 def get_reports_dir() -> Path:
     """Return the reports output directory path, supporting env var & config overrides."""
     env_path = os.getenv("DRAVYA_REPORTS_DIR") or os.getenv("REPORTS_DIR_PATH")
     if env_path:
-        p = Path(env_path)
-        if not p.is_absolute():
-            return (PROJECT_ROOT / p).resolve()
-        return p.resolve()
+        return Path(env_path)
 
     config_reports = _CONFIG.get("paths", {}).get(
         "reports_dir", "reports/dataset_analysis"
@@ -69,7 +63,7 @@ def get_reports_dir() -> Path:
     config_path = Path(config_reports)
     if not config_path.is_absolute():
         return (PROJECT_ROOT / config_path).resolve()
-    return config_path.resolve()
+    return config_path
 
 
 def get_evaluation_reports_dir() -> Path:
@@ -78,10 +72,7 @@ def get_evaluation_reports_dir() -> Path:
         "EVALUATION_REPORTS_DIR_PATH"
     )
     if env_path:
-        p = Path(env_path)
-        if not p.is_absolute():
-            return (PROJECT_ROOT / p).resolve()
-        return p.resolve()
+        return Path(env_path)
 
     config_eval = _CONFIG.get("paths", {}).get(
         "evaluation_reports_dir", "reports/model_evaluation"
@@ -89,24 +80,20 @@ def get_evaluation_reports_dir() -> Path:
     config_path = Path(config_eval)
     if not config_path.is_absolute():
         return (PROJECT_ROOT / config_path).resolve()
-    return config_path.resolve()
+    return config_path
 
 
 def get_models_dir() -> Path:
     """Return the models directory path, supporting env var & config overrides."""
     env_path = os.getenv("DRAVYA_MODELS_DIR") or os.getenv("MODELS_DIR_PATH")
     if env_path:
-        p = Path(env_path)
-        if not p.is_absolute():
-            return (PROJECT_ROOT / p).resolve()
-        return p.resolve()
+        return Path(env_path)
 
     config_models = _CONFIG.get("paths", {}).get("model_output", "models")
     config_path = Path(config_models)
     if not config_path.is_absolute():
         return (PROJECT_ROOT / config_path).resolve()
-    return config_path.resolve()
-
+    return config_path
 
 
 

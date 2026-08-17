@@ -35,14 +35,11 @@ Configure these variables in your deployment dashboard (e.g. Render/Railway Envi
 | `DRAVYA_CORS_ORIGINS` | No | `""` | Comma-separated list of additional allowed CORS origins. |
 | `DRAVYA_CONFIG_PATH` | No | `configs/config.yaml` | Relative or absolute path to the YAML configuration file. |
 | `DRAVYA_MODELS_DIR` | No | `models` | Directory path containing model version folders and `active_model.json`. |
-| `DRAVYA_ACTIVE_MODEL_VERSION` | No | `v1-kaggle` | Explicit active model version override. |
-| `DRAVYA_MODEL_URL` | No | `""` | Optional remote URL to download model weights if not present locally. |
 | `DRAVYA_LLM_PROVIDER` | No | `mock` | LLM backend for assistant (`mock` = deterministic rule engine, `openai`, `generic_http`). |
 | `DRAVYA_LLM_API_KEY` | No | `""` | API key if using an external LLM provider. |
 | `DRAVYA_LLM_MODEL` | No | `gpt-4o-mini` | Model name when external LLM provider is active. |
 
 > **Security Note**: Never commit actual secrets or `.env` files to version control. Use `.env.example` as a template.
-
 
 ---
 
