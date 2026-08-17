@@ -150,7 +150,7 @@ export function ChatWidget() {
                     </Avatar>
                   )}
                   <div
-                    className={`max-w-[78%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
+                    className={`max-w-[78%] whitespace-pre-line rounded-2xl px-3 py-2 text-sm leading-relaxed ${
                       msg.role === 'user'
                         ? 'rounded-tr-sm bg-[#184E48] text-white'
                         : 'rounded-tl-sm border border-[#184E48]/10 bg-white text-[#1C2422] shadow-sm'

@@ -43,36 +43,34 @@ KNOWLEDGE_REGISTRY: Dict[str, KnowledgeSnippet] = {
         title="Dravya Platform Overview & Problem Statement",
         summary_en=(
             "Dravya is an AI-powered botanical authentication and blockchain traceability platform "
-            "for the Ayurvedic herb supply chain. It addresses widespread raw herb adulteration, "
-            "accidental species substitution (e.g. Saraca asoca vs Polyalthia longifolia), and opaque supply chains."
+            "for the Ayurvedic herb supply chain. It addresses raw herb adulteration, "
+            "accidental species substitution, and opaque supply chains."
         ),
         summary_hi=(
             "Dravya ek AI-powered botanical identification aur blockchain traceability platform hai "
-            "jo Ayurvedic herb supply chain me adulteration (milawat) aur species substitution ki samasya ko hal karta hai."
+            "jo Ayurvedic herb supply chain me milawat aur species substitution ki samasya ko hal karta hai."
         ),
         details_en=(
-            "### What is Dravya?\n"
-            "**Dravya** is an enterprise-grade AI and blockchain platform designed to ensure authenticity, "
+            "Dravya is an enterprise-grade AI and blockchain platform designed to ensure authenticity, "
             "quality, and transparency in Ayurvedic medicine.\n\n"
-            "**1. Problem Addressed:**\n"
-            "- Widespread species substitution and adulteration in raw drug supply chains (e.g. *Saraca asoca* vs *Polyalthia longifolia*).\n"
-            "- Opaque supply chains with unverified intermediaries and paper records.\n"
-            "- Risk of contaminated or sub-potent herbal medicines reaching consumers.\n\n"
-            "**2. Core Objective:**\n"
-            "- Provide instant deep learning species verification at harvest.\n"
-            "- Cryptographically anchor every lot inspection, lab quality certificate, and distribution event to Hyperledger Fabric.\n"
-            "- Empower consumers and regulators with public QR code seed-to-shelf traceability."
+            "Key Problems Solved:\n"
+            "• Widespread species substitution and adulteration in raw herbs (e.g. Saraca asoca vs Polyalthia longifolia).\n"
+            "• Opaque supply chains with unverified intermediaries and paper records.\n"
+            "• Risk of contaminated or sub-potent herbal medicines reaching consumers.\n\n"
+            "Core Solutions:\n"
+            "• Instant deep learning species verification at harvest.\n"
+            "• Hyperledger Fabric blockchain records for every lot inspection and lab certificate.\n"
+            "• Consumer QR code verification for complete seed-to-shelf traceability."
         ),
         details_hi=(
-            "### Dravya Kya Hai?\n"
-            "**Dravya** ek AI aur blockchain-powered platform hai jo Ayurvedic aushadhiyon ki authenticity aur supply chain traceability sunishchit karta hai.\n\n"
-            "**1. Samasya (Problem):**\n"
-            "- Ayurvedic jadibutiyon me milawat aur nakli paudhon ki substitution (jaise asli *Saraca asoca* ki jagah *Polyalthia longifolia*).\n"
-            "- Supply chain me bichauliyon ke karan origin aur quality ka pata na chalna.\n\n"
-            "**2. Samadhan (Solution):**\n"
-            "- Khet par AI computer vision dwara jadibuti ki turant pehchan.\n"
-            "- Hyperledger Fabric blockchain par har batch ka tamper-evident record.\n"
-            "- Consumer ke liye QR code scan karke complete traceability dekhne ki suvidha."
+            "Dravya ek AI aur blockchain-powered platform hai jo Ayurvedic aushadhiyon ki authenticity aur supply chain traceability sunishchit karta hai.\n\n"
+            "Mukhya Samasya:\n"
+            "• Ayurvedic jadibutiyon me milawat aur nakli paudhon ki substitution (jaise asli Saraca asoca ki jagah Polyalthia longifolia).\n"
+            "• Supply chain me bichauliyon ke karan origin aur quality ka pata na chalna.\n\n"
+            "Dravya ka Samadhan:\n"
+            "• Khet par AI computer vision dwara jadibuti ki turant pehchan.\n"
+            "• Hyperledger Fabric blockchain par har batch ka tamper-evident record.\n"
+            "• Consumer ke liye QR code scan karke complete traceability dekhne ki suvidha."
         ),
         keywords=["what is dravya", "dravya kya hai", "problem", "overview", "kya karta hai", "objective", "purpose", "why dravya", "about dravya", "introduction"],
     ),
@@ -87,19 +85,20 @@ KNOWLEDGE_REGISTRY: Dict[str, KnowledgeSnippet] = {
             "Dravya ka mukhya uddeshya Ayurvedic herb supply chain me milawat rokna, genuine species verify karna aur transparent traceability dena hai."
         ),
         details_en=(
-            "### Dravya Core Objectives\n"
-            "1. **Prevent Species Substitution**: Use computer vision to accurately identify 82 medicinal species at harvest.\n"
-            "2. **Immutable Provenance**: Anchor batch inspections and lab certificates to Hyperledger Fabric blockchain.\n"
-            "3. **Detect Data Tampering**: Use SHA-256 cryptographic hashes to instantly flag altered records.\n"
-            "4. **Standardize Botanical Taxonomy**: Harmonize vernacular names to scientific binomial taxonomy.\n"
-            "5. **Fair Farmer Recognition**: Digitize batch ownership and provide verifiable source credentials."
+            "Dravya Core Objectives:\n\n"
+            "1. Prevent Species Substitution: Use computer vision to accurately identify 82 medicinal species at harvest.\n"
+            "2. Immutable Provenance: Anchor batch inspections and lab certificates to Hyperledger Fabric blockchain.\n"
+            "3. Detect Data Tampering: Use SHA-256 cryptographic hashes to instantly flag altered records.\n"
+            "4. Standardize Botanical Taxonomy: Harmonize vernacular names to scientific binomial taxonomy.\n"
+            "5. Fair Farmer Recognition: Digitize batch ownership and provide verifiable source credentials."
         ),
         details_hi=(
-            "### Dravya ke Mukhya Uddeshya\n"
-            "1. **Species Substitution Rokna**: Khet par hi 82 Ayurvedic jadibutiyon ki satik pehchan karna.\n"
-            "2. **Immutable Provenance**: Batch inspection aur lab test reports ko blockchain par surakshit karna.\n"
-            "3. **Data Tampering Rokna**: Cryptographic SHA-256 hash dwara kisi bhi unauthorized badlav ko pakadna.\n"
-            "4. **Botanical Standardization**: Vernacular naamo ko scientific botanical taxonomy se map karna."
+            "Dravya ke Mukhya Uddeshya:\n\n"
+            "1. Species Substitution Rokna: Khet par hi 82 Ayurvedic jadibutiyon ki satik pehchan karna.\n"
+            "2. Immutable Provenance: Batch inspection aur lab test reports ko blockchain par surakshit karna.\n"
+            "3. Data Tampering Rokna: Cryptographic SHA-256 hash dwara kisi bhi unauthorized badlav ko pakadna.\n"
+            "4. Botanical Standardization: Vernacular naamo ko scientific botanical taxonomy se map karna.\n"
+            "5. Farmer Recognition: Kisanon ko unke genuine utpadan ka digital pramaan dena."
         ),
         keywords=["objective", "goal", "purpose", "why created", "mission", "uddeshya", "kyun banaya"],
     ),
@@ -115,23 +114,23 @@ KNOWLEDGE_REGISTRY: Dict[str, KnowledgeSnippet] = {
             "multi-role dashboards aur public QR verification shamil hain."
         ),
         details_en=(
-            "### Major Features of Dravya\n"
-            "- **Visual AI Herb Classification**: Identifies 82 medicinal plant species from leaf photos with 98.67% test accuracy.\n"
-            "- **Botanical Taxonomy Resolution**: Automatically maps common names to canonical scientific binomials.\n"
-            "- **Deterministic Batch Generation**: Generates collision-resistant Batch IDs (`DRAVYA-{CODE}-{DATE}-{HASH}`).\n"
-            "- **Blockchain Traceability Anchoring**: Builds cryptographic SHA-256 records anchored on Hyperledger Fabric.\n"
-            "- **Multi-Stakeholder Dashboards**: Role-tailored portals for Producers, Verifiers, Testing Labs, Distributors, and Admins.\n"
-            "- **Public QR Verification**: Instant consumer verification portal at `/verify`.\n"
-            "- **Dravya AI Copilot**: Intelligent assistant for live inventory insights and project knowledge."
+            "Major Features of Dravya:\n\n"
+            "• Visual AI Herb Classification: Identifies 82 medicinal plant species from leaf photos with 98.67% test accuracy.\n"
+            "• Botanical Taxonomy Resolution: Automatically maps common names to canonical scientific binomials.\n"
+            "• Deterministic Batch Generation: Generates collision-resistant Batch IDs (DRAVYA-CODE-DATE-HASH).\n"
+            "• Blockchain Traceability Anchoring: Builds cryptographic SHA-256 records anchored on Hyperledger Fabric.\n"
+            "• Multi-Stakeholder Dashboards: Role-tailored portals for Producers, Verifiers, Testing Labs, Distributors, and Admins.\n"
+            "• Public QR Verification: Instant consumer verification portal at /verify.\n"
+            "• Dravya AI Copilot: Intelligent assistant for live inventory insights and project knowledge."
         ),
         details_hi=(
-            "### Dravya ke Mukhya Features\n"
-            "- **AI Herb Identification**: Patti ki photo se 82 medicinal species ki 98.67% accuracy ke sath pehchan.\n"
-            "- **Taxonomy Resolution**: Local naamo ko official scientific naamo me map karna.\n"
-            "- **Deterministic Batch IDs**: Har batch ke liye unique identification code.\n"
-            "- **Blockchain Traceability**: Hyperledger Fabric par tamper-proof audit trail.\n"
-            "- **Role-Based Portals**: Farmer, Verifier, Lab, Distributor aur Admin ke liye alag dashboards.\n"
-            "- **Public QR Code**: `/verify` page par koi bhi consumer poori journey check kar sakta hai."
+            "Dravya ke Mukhya Features:\n\n"
+            "• AI Herb Identification: Patti ki photo se 82 medicinal species ki 98.67% accuracy ke sath pehchan.\n"
+            "• Taxonomy Resolution: Local naamo ko official scientific naamo me map karna.\n"
+            "• Deterministic Batch IDs: Har batch ke liye unique identification code.\n"
+            "• Blockchain Traceability: Hyperledger Fabric par tamper-proof audit trail.\n"
+            "• Role-Based Portals: Farmer, Verifier, Lab, Distributor aur Admin ke liye alag dashboards.\n"
+            "• Public QR Code: /verify page par koi bhi consumer poori journey check kar sakta hai."
         ),
         keywords=["features", "capabilities", "kya features hain", "major features", "kya kya kar sakta hai", "functions"],
     ),
@@ -147,18 +146,18 @@ KNOWLEDGE_REGISTRY: Dict[str, KnowledgeSnippet] = {
             "aur Hyperledger Fabric blockchain se milkar bana hai."
         ),
         details_en=(
-            "### Dravya System Architecture\n"
-            "1. **Frontend Layer (`/client`)**: Next.js 16, React 19, TypeScript, Tailwind CSS with role-based access.\n"
-            "2. **Backend API (`/server`)**: Node.js, Express.js, Prisma ORM, PostgreSQL database for operational data and auth.\n"
-            "3. **AI Inference Engine (`/AI-Engine`)**: Python 3.12, FastAPI, PyTorch EfficientNet-B0 for plant identification & AI Copilot.\n"
-            "4. **Blockchain Layer (`/blockchain`)**: Hyperledger Fabric permissioned ledger for immutable state proofs and tamper detection."
+            "Dravya System Architecture:\n\n"
+            "1. Frontend Layer (/client): Next.js 16, React 19, TypeScript, Tailwind CSS with role-based access.\n"
+            "2. Backend API (/server): Node.js, Express.js, Prisma ORM, PostgreSQL database for operational data and auth.\n"
+            "3. AI Inference Engine (/AI-Engine): Python 3.12, FastAPI, PyTorch EfficientNet-B0 for plant identification & AI Copilot.\n"
+            "4. Blockchain Layer (/blockchain): Hyperledger Fabric permissioned ledger for immutable state proofs and tamper detection."
         ),
         details_hi=(
-            "### Dravya System Architecture\n"
-            "1. **Frontend (`/client`)**: Next.js 16, React 19, Tailwind CSS dwara banaya gaya responsive UI.\n"
-            "2. **Backend Server (`/server`)**: Node.js, Express, PostgreSQL aur Prisma ORM par aadharit business logic layer.\n"
-            "3. **AI Engine (`/AI-Engine`)**: Python FastAPI aur PyTorch EfficientNet-B0 dwara sanchalit identification service.\n"
-            "4. **Blockchain (`/blockchain`)**: Hyperledger Fabric permissioned ledger jo data integrity ensure karta hai."
+            "Dravya System Architecture:\n\n"
+            "1. Frontend (/client): Next.js 16, React 19, Tailwind CSS dwara banaya gaya responsive UI.\n"
+            "2. Backend Server (/server): Node.js, Express, PostgreSQL aur Prisma ORM par aadharit business logic layer.\n"
+            "3. AI Engine (/AI-Engine): Python FastAPI aur PyTorch EfficientNet-B0 dwara sanchalit identification service.\n"
+            "4. Blockchain (/blockchain): Hyperledger Fabric permissioned ledger jo data integrity ensure karta hai."
         ),
         keywords=["architecture", "system architecture", "components", "design", "how built", "structure", "kaise bana hai", "backend frontend relationship"],
     ),
@@ -174,22 +173,21 @@ KNOWLEDGE_REGISTRY: Dict[str, KnowledgeSnippet] = {
             "aur 98.67% test accuracy ke sath ~42 ms me classify karta hai."
         ),
         details_en=(
-            "### Dravya AI Engine Architecture\n"
-            "- **Backbone**: EfficientNet-B0 fine-tuned with custom Dropout ($p=0.2$) and Linear classification head.\n"
-            "- **Model Specs**: 5.3M parameters, 16.75 MB checkpoint (`models/v1-kaggle/best_model.pth`).\n"
-            "- **Accuracy**: **98.67% test accuracy** across 82 Ayurvedic plant species and 2,256 held-out test images (99.33% validation accuracy).\n"
-            "- **Inference Speed**: ~42 ms CPU inference latency.\n"
-            "- **Image Pipeline**: RGB validation, 224 x 224 resizing, ImageNet normalization, Softmax scoring.\n"
-            "- **Taxonomy Engine**: Maps internal IDs (e.g. `DRAVYA_0004`) to common (*Ashwagandha*) and scientific (*Withania somnifera*) names.\n"
-            "- **FastAPI Lifecycle**: Managed via thread-safe `PredictorDependencyManager` singleton cache."
+            "Dravya AI Engine Architecture:\n\n"
+            "• Neural Backbone: EfficientNet-B0 fine-tuned with custom Dropout (p=0.2) and Linear classification head.\n"
+            "• Model Specs: 5.3 Million parameters, 16.75 MB checkpoint file.\n"
+            "• Accuracy: 98.67% test accuracy across 82 Ayurvedic plant species (99.33% validation accuracy).\n"
+            "• Inference Speed: ~42 ms CPU inference latency per image.\n"
+            "• Image Pipeline: RGB validation, 224 x 224 resizing, ImageNet normalization, Softmax scoring.\n"
+            "• Taxonomy Engine: Maps internal IDs to common and scientific names (e.g. Ashwagandha -> Withania somnifera)."
         ),
         details_hi=(
-            "### Dravya AI Engine Architecture\n"
-            "- **Neural Network**: EfficientNet-B0 architecture (5.3 Million parameters, 16.75 MB model size).\n"
-            "- **Accuracy**: **98.67% test accuracy** (82 Ayurvedic plant species par trained).\n"
-            "- **Speed**: CPU par lagbhag 42 ms me inference complete hota hai.\n"
-            "- **Image Flow**: Image validate hokar 224 x 224 pixels tensor me convert hoti hai, model se prediction aur confidence score milta hai.\n"
-            "- **Botanical Mapping**: Predicted class ko scientific name (jaise *Withania somnifera*) se link kiya jata hai."
+            "Dravya AI Engine Architecture:\n\n"
+            "• Neural Network: EfficientNet-B0 architecture (5.3 Million parameters, 16.75 MB model size).\n"
+            "• Accuracy: 98.67% test accuracy (82 Ayurvedic plant species par trained).\n"
+            "• Speed: CPU par lagbhag 42 ms me inference complete hota hai.\n"
+            "• Image Flow: Image validate hokar 224 x 224 pixels me convert hoti hai aur prediction score milta hai.\n"
+            "• Botanical Mapping: Predicted class ko scientific name (jaise Withania somnifera) se link kiya jata hai."
         ),
         keywords=["ai engine", "model", "efficientnet", "deep learning", "accuracy", "parameters", "ai architecture", "how ai works", "neural network"],
     ),
@@ -204,21 +202,20 @@ KNOWLEDGE_REGISTRY: Dict[str, KnowledgeSnippet] = {
             "Kisan dwara upload ki gayi patti ki photo ko AI Engine validate karke 224x224 size me EfficientNet-B0 model dwara identify karta hai."
         ),
         details_en=(
-            "### How Herb Identification Works\n"
-            "1. **Image Upload**: Field photo submitted via `POST /batches/create-from-image` or `POST /predict` (JPEG/PNG/WebP, max 10MB).\n"
-            "2. **Pillow Validation**: Checks file format, verifies bytes, and extracts dimensions.\n"
-            "3. **Preprocessing**: Converts to RGB, resizes to 224 x 224, scales to [0, 1], applies ImageNet mean/std normalization.\n"
-            "4. **EfficientNet-B0 Inference**: Forward pass generates 82-class logits transformed via Softmax into probabilities.\n"
-            "5. **Taxonomy Mapping**: The highest-probability class ID is matched to canonical and scientific names.\n"
-            "6. **Verification Gate**: Confidence >= 0.90 is marked `AI_CONFIRMED`; lower scores trigger `REVIEW_REQUIRED`."
+            "How Herb Identification Works:\n\n"
+            "1. Image Upload: Field photo submitted via /batches/create-from-image or /predict (JPEG/PNG/WebP, max 10MB).\n"
+            "2. Preprocessing: Converts to RGB, resizes to 224 x 224, applies ImageNet normalization.\n"
+            "3. EfficientNet-B0 Inference: Model calculates class logits transformed into probabilities.\n"
+            "4. Taxonomy Mapping: Highest probability class is matched to canonical scientific names.\n"
+            "5. Verification Gate: Confidence >= 90% is marked AI_CONFIRMED; lower scores trigger REVIEW_REQUIRED."
         ),
         details_hi=(
-            "### Herb Identification Kaise Kaam Karta Hai?\n"
-            "1. **Photo Upload**: Kisan patti ki photo upload karta hai (`POST /batches/create-from-image`).\n"
-            "2. **Preprocessing**: Image ko 224 x 224 pixels me resize aur normalize kiya jata hai.\n"
-            "3. **Model Inference**: EfficientNet-B0 model 82 species me se sabse accurate match nikalta hai.\n"
-            "4. **Taxonomy Resolution**: Predicted class ko scientific botanical name se link kiya jata hai.\n"
-            "5. **Confidence Status**: Agar confidence 90% se zyada hai toh batch `AI_CONFIRMED` ho jata hai."
+            "Herb Identification Kaise Kaam Karta Hai:\n\n"
+            "1. Photo Upload: Kisan patti ki photo upload karta hai.\n"
+            "2. Preprocessing: Image ko 224 x 224 pixels me resize aur normalize kiya jata hai.\n"
+            "3. Model Inference: EfficientNet-B0 model 82 species me se accurate match nikalta hai.\n"
+            "4. Taxonomy Resolution: Predicted class ko scientific botanical name se link kiya jata hai.\n"
+            "5. Confidence Status: Agar confidence 90% se zyada hai toh batch AI_CONFIRMED ho jata hai."
         ),
         keywords=["herb identification", "identify herb", "how identification works", "photo identification", "image processing", "predict herb", "pehchan kaise"],
     ),
@@ -233,27 +230,26 @@ KNOWLEDGE_REGISTRY: Dict[str, KnowledgeSnippet] = {
             "Dravya Hyperledger Fabric blockchain ka upyog karta hai jisme har inspection, lab test aur custody transfer ka SHA-256 hash store hota hai."
         ),
         details_en=(
-            "### Role of Blockchain in Dravya\n"
-            "**1. Hyperledger Fabric Permissioned Ledger**:\n"
-            "- Enterprise blockchain architecture suitable for healthcare and supply chain regulation.\n"
-            "- Ensures high throughput, low latency, and zero cryptocurrency gas fees.\n\n"
-            "**2. What is Stored on Blockchain?**\n"
-            "- Milestone cryptographic state hashes (`payload_hash`), not raw heavy images.\n"
-            "- Batch creation, Lot inspection approval, Lab Quality Certificate of Analysis (CoA), and Distributor delivery events.\n\n"
-            "**3. Tamper Detection Mechanism**:\n"
-            "- When a QR code is scanned, current database records are re-hashed.\n"
-            "- The recomputed hash is compared with the blockchain anchored hash.\n"
-            "- Any unauthorized edit triggers a **CRITICAL WARNING: Data Tampered** alert."
+            "Role of Blockchain in Dravya:\n\n"
+            "1. Hyperledger Fabric Ledger:\n"
+            "• Enterprise permissioned blockchain suitable for supply chain compliance.\n"
+            "• High throughput, low latency, and zero cryptocurrency gas fees.\n\n"
+            "2. What is Stored on Blockchain:\n"
+            "• Milestone cryptographic SHA-256 hashes (payload_hash), not raw heavy images.\n"
+            "• Batch creation, Lot inspection approval, Lab Quality Certificate (CoA), and Logistics transfers.\n\n"
+            "3. Tamper Detection:\n"
+            "• Scanning a QR code re-hashes live database records and compares them against the blockchain hash.\n"
+            "• Any unauthorized modification immediately triggers a tampering alert."
         ),
         details_hi=(
-            "### Dravya me Blockchain ka Role\n"
-            "**1. Hyperledger Fabric Ledger**:\n"
-            "- Permissioned enterprise blockchain jo supply chain ke liye fast aur gas-fee free hai.\n\n"
-            "**2. Blockchain par kya store hota hai?**\n"
-            "- Har milestone ka cryptographic SHA-256 hash (`payload_hash`).\n"
-            "- Batch creation, Authority inspection, Lab quality approval aur Logistics transfer events.\n\n"
-            "**3. Tamper Detection**:\n"
-            "- QR scan karne par live database hash ko blockchain hash se compare kiya jata hai. Mismatch hone par tampering alert milta hai."
+            "Dravya me Blockchain ka Role:\n\n"
+            "1. Hyperledger Fabric Ledger:\n"
+            "• Permissioned enterprise blockchain jo fast aur gas-fee free hai.\n\n"
+            "2. Blockchain par kya store hota hai:\n"
+            "• Har milestone ka cryptographic SHA-256 hash (payload_hash).\n"
+            "• Batch creation, Authority inspection, Lab quality approval aur Logistics events.\n\n"
+            "3. Tamper Detection:\n"
+            "• QR scan karne par database hash ko blockchain hash se compare kiya jata hai. Mismatch par tampering alert milta hai."
         ),
         keywords=["blockchain", "hyperledger fabric", "ledger", "role of blockchain", "tamper detection", "on-chain", "smart contract", "chaincode"],
     ),
@@ -268,22 +264,14 @@ KNOWLEDGE_REGISTRY: Dict[str, KnowledgeSnippet] = {
             "Traceability payload me herb species, farmer details, quantity, AI prediction aur 64-character SHA-256 hash hota hai."
         ),
         details_en=(
-            "### Traceability & Payload Architecture\n"
-            "- **Deterministic Batch ID**: `DRAVYA-{HERB_CODE}-{YYYYMMDD}-{HASH}` (e.g. `DRAVYA-ASH-20260810-346DA7`).\n"
-            "- **Payload Fields**:\n"
-            "  1. `batch_id`: Unique tracking code.\n"
-            "  2. `herb`: Common, canonical, and scientific botanical taxonomy.\n"
-            "  3. `origin`: Farmer ID (`F001`) and farmer name.\n"
-            "  4. `quantity`: Normalized weight in kg and original units.\n"
-            "  5. `ai_verification`: Species prediction, confidence score, model version.\n"
-            "  6. `verification_status`: Current lifecycle state (`AI_CONFIRMED`, `QUALITY_APPROVED`, etc.).\n"
-            "  7. `timestamps`: Harvest date and ISO-8601 creation timestamp.\n"
-            "  8. `payload_hash`: Cryptographic 64-character SHA-256 integrity hash."
+            "Traceability & Payload Structure:\n\n"
+            "• Deterministic Batch ID: Format DRAVYA-CODE-DATE-HASH (e.g. DRAVYA-ASH-20260810-346DA7).\n"
+            "• Payload Contents: Herb species, Farmer ID, quantity (kg), AI prediction score, status, harvest date, and 64-character SHA-256 payload hash."
         ),
         details_hi=(
-            "### Traceability Payload kya hai?\n"
-            "- **Deterministic Batch ID**: Format `DRAVYA-{HERB_CODE}-{YYYYMMDD}-{HASH}`.\n"
-            "- **Payload Data**: Herb species, Farmer ID, normalized quantity (kg), AI prediction score, status aur 64-character SHA-256 payload hash jo tamper-evident hota hai."
+            "Traceability Payload kya hai:\n\n"
+            "• Deterministic Batch ID: Format DRAVYA-HERB_CODE-DATE-HASH.\n"
+            "• Payload Data: Herb species, Farmer ID, quantity (kg), AI prediction score, status, aur 64-character SHA-256 hash jo tamper-evident hota hai."
         ),
         keywords=["traceability", "traceability payload", "payload_hash", "how traceability works", "traceability structure", "batch traceability"],
     ),
@@ -299,25 +287,25 @@ KNOWLEDGE_REGISTRY: Dict[str, KnowledgeSnippet] = {
             "3) Lab testing, 4) Distribution logistics, aur 5) Public QR verification."
         ),
         details_en=(
-            "### Complete Dravya Workflow (5 Phases)\n"
-            "1. **Phase 1: Registration & Initial Verification**\n"
-            "   - Producer registers farm details; assigned Verification Authority inspects and approves farm on-chain.\n"
-            "2. **Phase 2: Cultivation & Harvest (Batch Creation)**\n"
-            "   - Farmer captures leaf photo; AI Engine identifies species, assigns Batch ID, and Authority signs off lot inspection.\n"
-            "3. **Phase 3: Laboratory Analytical Testing**\n"
-            "   - AYUSH-certified lab tests for Heavy Metals, Pesticides, and Active Phytochemicals; anchors signed Certificate of Analysis (CoA).\n"
-            "4. **Phase 4: Distribution & Logistics**\n"
-            "   - Batch transferred to logistics partner with digital custody handoffs; final product QR code is generated.\n"
-            "5. **Phase 5: Public QR Verification & Tamper Check**\n"
-            "   - Consumers scan QR code at `/verify` to view full provenance; system checks DB hash against blockchain hash to detect tampering."
+            "Complete Dravya Workflow (5 Phases):\n\n"
+            "Phase 1: Registration & Farm Verification\n"
+            "• Producer registers farm; Verification Authority inspects and approves farm on-chain.\n\n"
+            "Phase 2: Cultivation & Harvest (Batch Creation)\n"
+            "• Farmer captures leaf photo; AI Engine identifies species, assigns Batch ID, and Authority signs off lot inspection.\n\n"
+            "Phase 3: Laboratory Testing\n"
+            "• Certified lab tests for Heavy Metals, Pesticides, and Phytochemicals; anchors signed Certificate of Analysis (CoA).\n\n"
+            "Phase 4: Distribution & Logistics\n"
+            "• Batch transferred to logistics partner with digital custody tracking; final product QR code generated.\n\n"
+            "Phase 5: Public QR Verification & Tamper Check\n"
+            "• Consumers scan QR code at /verify to view full provenance and verify tamper status."
         ),
         details_hi=(
-            "### Dravya ka Poora Workflow (5 Phases)\n"
-            "1. **Phase 1: Registration & Verification**: Kisan farm register karta hai aur Authority verify karti hai.\n"
-            "2. **Phase 2: Harvest & AI Identification**: Patti ki photo se AI species identify karta hai aur batch banta hai.\n"
-            "3. **Phase 3: Lab Testing**: Certified lab me Heavy Metals aur Pesticides test hokar CoA report blockchain par jati hai.\n"
-            "4. **Phase 4: Distribution**: Logistics partner delivery track karta hai aur QR code banta hai.\n"
-            "5. **Phase 5: Public QR Verification**: Consumer `/verify` par QR scan karke poora audit trail dekh sakta hai."
+            "Dravya ka Poora Workflow (5 Phases):\n\n"
+            "Phase 1: Registration & Verification: Kisan farm register karta hai aur Authority verify karti hai.\n\n"
+            "Phase 2: Harvest & AI Identification: Patti ki photo se AI species identify karta hai aur batch banta hai.\n\n"
+            "Phase 3: Lab Testing: Certified lab me Heavy Metals aur Pesticides test hokar CoA report blockchain par jati hai.\n\n"
+            "Phase 4: Distribution: Logistics partner delivery track karta hai aur QR code banta hai.\n\n"
+            "Phase 5: Public QR Verification: Consumer /verify par QR scan karke poora audit trail dekh sakta hai."
         ),
         keywords=["workflow", "complete workflow", "how dravya works", "kaise kaam karta hai", "supply chain flow", "steps", "journey", "farmer to consumer"],
     ),
@@ -332,20 +320,20 @@ KNOWLEDGE_REGISTRY: Dict[str, KnowledgeSnippet] = {
             "Dravya Next.js 16, React 19, Express.js, PostgreSQL, Python FastAPI, PyTorch aur Hyperledger Fabric se bana hai."
         ),
         details_en=(
-            "### Technology Stack Breakdown\n"
-            "- **Frontend**: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS, Zustand, React Query.\n"
-            "- **Backend**: Node.js, Express.js, TypeScript, Prisma ORM, PostgreSQL, JWT Authentication.\n"
-            "- **AI Engine**: Python 3.12, FastAPI, PyTorch 2.13, Pillow, Pydantic v2, EfficientNet-B0.\n"
-            "- **Blockchain**: Hyperledger Fabric permissioned distributed ledger.\n"
-            "- **Testing & QA**: PyTest (270+ tests), Jest, ESLint."
+            "Technology Stack Breakdown:\n\n"
+            "• Frontend: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS, Zustand, React Query.\n"
+            "• Backend: Node.js, Express.js, TypeScript, Prisma ORM, PostgreSQL, JWT Authentication.\n"
+            "• AI Engine: Python 3.12, FastAPI, PyTorch 2.13, Pillow, Pydantic v2, EfficientNet-B0.\n"
+            "• Blockchain: Hyperledger Fabric permissioned distributed ledger.\n"
+            "• Testing & QA: PyTest, Jest, ESLint."
         ),
         details_hi=(
-            "### Technology Stack\n"
-            "- **Frontend**: Next.js 16, React 19, TypeScript, Tailwind CSS.\n"
-            "- **Backend**: Node.js, Express.js, TypeScript, Prisma ORM, PostgreSQL.\n"
-            "- **AI Engine**: Python 3.12, FastAPI, PyTorch, EfficientNet-B0.\n"
-            "- **Blockchain**: Hyperledger Fabric.\n"
-            "- **Testing**: PyTest (270+ automated tests)."
+            "Technology Stack:\n\n"
+            "• Frontend: Next.js 16, React 19, TypeScript, Tailwind CSS.\n"
+            "• Backend: Node.js, Express.js, TypeScript, Prisma ORM, PostgreSQL.\n"
+            "• AI Engine: Python 3.12, FastAPI, PyTorch, EfficientNet-B0.\n"
+            "• Blockchain: Hyperledger Fabric.\n"
+            "• Testing: PyTest automated tests."
         ),
         keywords=["tech stack", "technology", "technologies used", "stack", "tools", "libraries", "frameworks", "kaunsi technology"],
     ),
@@ -353,25 +341,25 @@ KNOWLEDGE_REGISTRY: Dict[str, KnowledgeSnippet] = {
         topic=TOPIC_MODEL_LIFECYCLE,
         title="Model Lifecycle, Versioning & Promotion Gates",
         summary_en=(
-            "The AI Engine enforces version isolation (`models/<version>/`), atomic version pointers (`active_model.json`), "
+            "The AI Engine enforces version isolation, atomic version pointers, "
             "automated evaluation gates (>=95% test accuracy), and instant rollback capabilities."
         ),
         summary_hi=(
-            "AI Engine me model versioning pointer (`active_model.json`), automated quality gates (>=95% accuracy) aur instant rollback shamil hai."
+            "AI Engine me model versioning pointer (active_model.json), automated quality gates (>=95% accuracy) aur instant rollback shamil hai."
         ),
         details_en=(
-            "### Model Lifecycle & Data Governance\n"
-            "1. **Version Isolation**: Every model version resides in `models/<version_id>/` with its own weights, mapping, and metadata.\n"
-            "2. **Active Version Pointer**: `models/active_model.json` atomically points to the active production model.\n"
-            "3. **Promotion Quality Gate**: New models must pass SHA-256 duplicate auditing, human botanical review, and >= 95.0% test accuracy.\n"
-            "4. **Zero-Downtime Rollback**: `ModelPromoter.rollback_promotion()` reverts to the previous version pointer without restarting containers."
+            "Model Lifecycle & Governance:\n\n"
+            "1. Version Isolation: Every model version resides in models/<version_id>/ with its own weights, mapping, and metadata.\n"
+            "2. Active Version Pointer: models/active_model.json atomically points to the active production model.\n"
+            "3. Promotion Quality Gate: New models must achieve >= 95.0% test accuracy before deployment.\n"
+            "4. Zero-Downtime Rollback: System can instantly revert to the previous version pointer without restarting containers."
         ),
         details_hi=(
-            "### Model Lifecycle & Versioning\n"
-            "1. **Version Isolation**: Har model version `models/<version_id>/` me alag store hota hai.\n"
-            "2. **Active Pointer**: `active_model.json` file active production model ko point karti hai.\n"
-            "3. **Quality Gate**: Naya model promote karne se pehle minimum 95% test accuracy zaroori hai.\n"
-            "4. **Rollback**: Problem aane par bina downtime purane model par instantly rollback kiya ja sakta hai."
+            "Model Lifecycle & Versioning:\n\n"
+            "1. Version Isolation: Har model version models/<version_id>/ me alag store hota hai.\n"
+            "2. Active Pointer: active_model.json file active production model ko point karti hai.\n"
+            "3. Quality Gate: Naya model promote karne se pehle minimum 95% test accuracy zaroori hai.\n"
+            "4. Rollback: Problem aane par bina downtime purane model par instantly rollback kiya ja sakta hai."
         ),
         keywords=["model lifecycle", "model versioning", "promotion gate", "active_model.json", "update model", "rollback", "model update"],
     ),
